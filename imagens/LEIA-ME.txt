@@ -1,0 +1,8 @@
+Coloque nesta pasta as imagens da pasta "portfolio-imagens" do seu Google Drive:
+- sementes-anuario-aberto.jpg
+- sementes-2025.jpg
+- sementes-lancamento-2025.jpg
+- sementes-lancamento-2023.jpg
+- valeria.jpg (sua foto comprimida, ~800 px de largura)
+As imagens da Padoca e do Medium carregam direto da web.
+Pode apagar este arquivo antes de subir.
