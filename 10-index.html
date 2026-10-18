@@ -1,0 +1,1017 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Valéria Reis — Design de Serviços</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Public+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#ffffff; --ink:#000000; --soft:#4a4a4a; --line:#dcdcdc;
+  --red:#c4001a; --tint:#f6f6f6; --panel:#f6f6f6;
+  --serif:"Young Serif", Georgia, "Times New Roman", serif;
+  --sans:"Public Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  font-size:100%;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#000000; --ink:#ffffff; --soft:#c2c2c2; --line:#3a3a3a;
+    --red:#ff4d61; --tint:#141414; --panel:#141414;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#000000; --ink:#ffffff; --soft:#c2c2c2; --line:#3a3a3a;
+  --red:#ff4d61; --tint:#141414; --panel:#141414;
+}
+:root.big{font-size:118.75%}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 72px);scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:1.0625rem;line-height:1.6;-webkit-font-smoothing:antialiased}
+img{max-width:100%}
+a{color:var(--ink);text-decoration-color:var(--red);text-decoration-thickness:2px;text-underline-offset:3px}
+a:hover{color:var(--red)}
+:focus-visible{outline:3px solid var(--red);outline-offset:3px}
+.skip{position:absolute;left:-999px;top:0;background:var(--ink);color:var(--paper);padding:.6rem 1rem;z-index:20}
+.skip:focus{left:1rem;top:calc(env(safe-area-inset-top,0px) + .5rem)}
+.wrap{max-width:72rem;margin:0 auto;padding:0 1.5rem}
+.read{max-width:42rem}
+
+/* top bar */
+header.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--paper);border-bottom:1px solid var(--line)}
+header.bar .wrap{display:flex;align-items:center;justify-content:space-between;gap:1rem;min-height:60px;flex-wrap:wrap}
+.mark{font-family:var(--serif);font-size:1.15rem;text-decoration:none}
+nav ul{list-style:none;margin:0;padding:0;display:flex;gap:1.25rem;flex-wrap:wrap}
+nav a{text-decoration:none;font-size:.95rem}
+nav a:hover{text-decoration:underline}
+.textsize{font:inherit;font-size:.9rem;background:none;border:1.5px solid var(--ink);color:var(--ink);border-radius:999px;padding:.35rem .9rem;min-height:44px;cursor:pointer}
+.textsize[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+
+/* hero */
+.hero{padding:5rem 0 4rem}
+.hero h1{font-family:var(--serif);font-weight:400;font-size:clamp(2.6rem,7vw,5.6rem);line-height:1.02;margin:0 0 2rem;letter-spacing:-.01em;max-width:16ch}
+.hero h1 .dot{color:var(--red)}
+.hero .lede{font-size:1.3rem;line-height:1.5;max-width:40rem;margin:0 0 1.5rem}
+.hero .side{color:var(--soft);max-width:40rem;margin:0}
+.pair{margin:3rem 0 0;display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:2px solid var(--ink)}
+.pair figure{margin:0;padding:1.5rem 1.5rem 1.5rem 0}
+.pair figure + figure{border-left:1px solid var(--line);padding-left:1.5rem}
+.pair blockquote{margin:0;font-family:var(--serif);font-size:1.25rem;line-height:1.4}
+.pair figcaption{margin-top:.75rem;font-size:.9rem;color:var(--soft)}
+@media (max-width:640px){.pair{grid-template-columns:1fr}.pair figure + figure{border-left:0;border-top:1px solid var(--line);padding-left:0}}
+
+/* sections */
+section{padding:4.5rem 0;border-top:1px solid var(--line)}
+h2{font-family:var(--serif);font-weight:400;font-size:clamp(2rem,4vw,3rem);line-height:1.1;margin:0 0 1.25rem}
+h3{font-family:var(--serif);font-weight:400;font-size:1.6rem;line-height:1.2;margin:0 0 .5rem}
+h4{font-size:1rem;font-weight:700;margin:2rem 0 .5rem}
+p{margin:0 0 1rem}
+.intro{color:var(--soft);font-size:1.1rem;max-width:42rem;margin-bottom:2.5rem}
+
+/* method */
+.method{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:2rem 2.5rem}
+.method div{border-top:3px solid var(--ink);padding-top:1rem}
+.method h3{font-size:1.25rem}
+.method p{font-size:.98rem;color:var(--soft)}
+.method .proof{color:var(--ink);font-size:.92rem;border-left:0;margin:0}
+.method .proof strong{color:var(--red);font-weight:700}
+
+/* timeline */
+.timeline{list-style:none;margin:0;padding:0;position:relative}
+.timeline li{display:grid;grid-template-columns:8.5rem 1fr;gap:1.5rem;padding:1.4rem 0;border-bottom:1px solid var(--line)}
+.timeline .yr{font-family:var(--serif);font-size:1.35rem;line-height:1.2;color:var(--red);font-variant-numeric:tabular-nums}
+.timeline h3{font-size:1.25rem;margin:0 0 .15rem}
+.timeline .role{font-size:.92rem;color:var(--soft);margin:0 0 .5rem}
+.timeline p{margin:0 0 .4rem;max-width:44rem}
+.timeline .lens{font-size:.95rem}
+.timeline .lens b{font-weight:700}
+.timeline .go{font-size:.92rem;font-weight:500}
+.timeline li.key{background:var(--tint);margin:0 -1.5rem;padding-left:1.5rem;padding-right:1.5rem;border-bottom-color:transparent}
+@media (max-width:640px){.timeline li{grid-template-columns:1fr;gap:.35rem}}
+
+/* cases */
+.case{padding:5rem 0;border-top:2px solid var(--ink)}
+.case-head{display:grid;grid-template-columns:1fr 18rem;gap:2.5rem;align-items:start;margin-bottom:2.5rem}
+.case-head .when{font-family:var(--serif);font-size:1.2rem;color:var(--red);margin:0 0 .5rem}
+.case-head h2{max-width:22ch}
+.facts{margin:0;font-size:.92rem;border-top:1px solid var(--line)}
+.facts div{padding:.6rem 0;border-bottom:1px solid var(--line)}
+.facts dt{font-weight:700}
+.facts dd{margin:0;color:var(--soft)}
+@media (max-width:820px){.case-head{grid-template-columns:1fr}}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(18rem,1fr));gap:1rem 3rem}
+.callout{font-family:var(--serif);font-size:1.5rem;line-height:1.35;margin:2.5rem 0;max-width:34ch}
+.callout cite{display:block;font-family:var(--sans);font-style:normal;font-size:.9rem;color:var(--soft);margin-top:.6rem}
+.numbers{display:grid;grid-template-columns:repeat(auto-fit,minmax(9.5rem,1fr));gap:0;margin:2rem 0;border-top:1px solid var(--line);border-left:1px solid var(--line)}
+.numbers div{padding:1rem;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.numbers b{display:block;font-family:var(--serif);font-weight:400;font-size:2rem;line-height:1.1}
+.numbers span{font-size:.88rem;color:var(--soft)}
+.next{background:var(--panel);padding:1.25rem 1.5rem;margin-top:2rem;max-width:46rem}
+.next h4{margin-top:0}
+.note{font-size:.88rem;color:var(--soft)}
+
+/* artifacts */
+.artifact{margin:2.5rem 0}
+.artifact > .label{font-size:.95rem;font-weight:700;margin:0 0 .25rem}
+.artifact > .sub{font-size:.88rem;color:var(--soft);margin:0 0 1rem}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line)}
+table.bp{border-collapse:collapse;min-width:58rem;width:100%;font-size:.86rem;line-height:1.4}
+table.bp th,table.bp td{padding:.7rem .75rem;vertical-align:top;border-bottom:1px solid var(--line);border-right:1px solid var(--line);text-align:left}
+table.bp thead th{background:var(--ink);color:var(--paper);font-weight:700;font-size:.85rem}
+table.bp thead th:first-child{background:var(--paper);color:var(--ink)}
+table.bp tbody th{width:9.5rem;background:var(--panel);font-weight:700}
+table.bp tr.line td,table.bp tr.line th{border-bottom:2px dashed var(--red)}
+table.bp tr.vis td,table.bp tr.vis th{border-bottom:2px solid var(--red)}
+.legend{display:flex;gap:1.5rem;flex-wrap:wrap;font-size:.85rem;color:var(--soft);margin:.75rem 0 0}
+.legend span::before{content:"";display:inline-block;width:1.6rem;height:0;vertical-align:middle;margin-right:.4rem}
+.legend .l1::before{border-top:2px dashed var(--red)}
+.legend .l2::before{border-top:2px solid var(--red)}
+
+ol.flow{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(9,minmax(8.5rem,1fr));min-width:76rem;counter-reset:s}
+ol.flow li{padding:1rem .8rem;border-right:1px solid var(--line);counter-increment:s;font-size:.86rem}
+ol.flow li:last-child{border-right:0}
+ol.flow li::before{content:counter(s);display:block;font-family:var(--serif);font-size:1.4rem;color:var(--red);line-height:1}
+ol.flow b{display:block;margin:.4rem 0 .25rem;font-size:.92rem}
+.qrow{display:grid;grid-template-columns:repeat(9,minmax(8.5rem,1fr));min-width:76rem;border-top:1px solid var(--line);font-size:.82rem}
+.qrow div{padding:.6rem .8rem;background:var(--tint);border-right:1px solid var(--paper)}
+.qrow div.span2{grid-column:span 2}
+.qrow div.span3{grid-column:span 3}
+
+.split{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line)}
+.split > div{padding:1.25rem}
+.split > div + div{border-left:1px solid var(--line)}
+.split h5{font-size:1rem;margin:0 0 .6rem}
+.split ul{margin:0;padding-left:1.1rem;font-size:.92rem}
+.split li{margin-bottom:.3rem}
+.split .human h5{color:var(--red)}
+@media (max-width:640px){.split{grid-template-columns:1fr}.split > div + div{border-left:0;border-top:1px solid var(--line)}}
+
+table.who{border-collapse:collapse;width:100%;min-width:34rem;font-size:.92rem}
+table.who th,table.who td{padding:.65rem .75rem;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+table.who thead th{border-bottom:2px solid var(--ink)}
+.tag{display:inline-block;font-size:.8rem;font-weight:700;padding:.1rem .55rem;border-radius:999px;border:1.5px solid var(--ink)}
+.tag.h{border-color:var(--red);color:var(--red)}
+
+.copy{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin:1.5rem 0}
+.copy figure{margin:0;padding:1.25rem;border:1px solid var(--line)}
+.copy blockquote{margin:0;font-size:.98rem;font-style:italic}
+.copy figcaption{font-size:.85rem;color:var(--soft);margin-top:.6rem}
+@media (max-width:720px){.copy{grid-template-columns:1fr}}
+
+.ex-journey{display:grid;grid-template-columns:repeat(6,minmax(9.5rem,1fr));min-width:60rem}
+.ex-journey > div{padding:1rem .85rem;border-right:1px solid var(--line);font-size:.86rem}
+.ex-journey > div:last-child{border-right:0}
+.ex-journey b{display:block;font-size:.95rem;margin-bottom:.35rem}
+.ex-journey .where{color:var(--red);font-weight:700;font-size:.8rem;margin-top:.5rem;display:block}
+
+/* contact */
+.contact h2{font-size:clamp(2.2rem,5vw,3.6rem)}
+.contact p{font-size:1.15rem}
+footer{padding:2rem 0 3rem;font-size:.88rem;color:var(--soft);border-top:1px solid var(--line)}
+
+/* frameworks */
+table.fw{border-collapse:collapse;width:100%;min-width:50rem;font-size:.9rem}
+table.fw th,table.fw td{padding:.6rem .75rem;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+table.fw thead th{border-bottom:2px solid var(--ink);font-size:.85rem}
+table.fw td.m{text-align:center;font-size:1.05rem;color:var(--red);width:7rem}
+table.fw tbody th{font-weight:700}
+table.fw tbody th span{display:block;font-weight:400;color:var(--soft);font-size:.82rem}
+.rings{border:2px solid var(--ink);padding:1rem}
+.rings .ring{border:1.5px solid var(--line);padding:1rem;margin-top:.75rem}
+.rings .ring.core{border:2px solid var(--red);background:var(--tint)}
+.rings h5{margin:0 0 .4rem;font-size:.92rem}
+.rings ul{margin:0;padding-left:1.1rem;font-size:.88rem;columns:2 16rem;column-gap:2rem}
+.rings li{margin-bottom:.2rem;break-inside:avoid}
+table.cmp{border-collapse:collapse;width:100%;min-width:44rem;font-size:.88rem}
+table.cmp th,table.cmp td{padding:.65rem .75rem;border-bottom:1px solid var(--line);border-right:1px solid var(--line);text-align:left;vertical-align:top}
+table.cmp thead th{background:var(--ink);color:var(--paper)}
+table.cmp thead th:last-child{background:var(--red)}
+table.cmp tbody th{background:var(--panel);width:8rem}
+table.ee{min-width:64rem}
+table.ee thead tr.e th{background:var(--red);color:#fff;font-family:var(--serif);font-weight:400;font-size:1.05rem}
+table.ee thead tr.e th.out{background:var(--panel);color:var(--ink)}
+table.ee td ul{margin:0;padding-left:1rem}
+table.ee td li{margin-bottom:.15rem}
+details.more{margin-top:1.5rem;border-top:1px solid var(--line)}
+details.more > summary{list-style:none;cursor:pointer;display:inline-flex;align-items:center;gap:.6rem;min-height:44px;margin-top:1rem;padding:.5rem 1.1rem;border:1.5px solid var(--ink);border-radius:999px;font-weight:500}
+details.more > summary::-webkit-details-marker{display:none}
+details.more > summary::before{content:"+";font-family:var(--serif);font-size:1.25rem;line-height:1;color:var(--red)}
+details.more[open] > summary::before{content:"−"}
+details.more > summary:hover{background:var(--ink);color:var(--paper)}
+details.more .close-t{display:none}
+details.more[open] .close-t{display:inline}
+details.more[open] .open-t{display:none}
+.more-body{padding-top:.5rem}
+.case{padding:3.5rem 0}
+figure.photo{margin:1.5rem 0 0}
+figure.photo img{display:block;width:100%;max-height:30rem;object-fit:contain;border:1px solid var(--line);background:var(--panel)}
+figure.photo figcaption{font-size:.85rem;color:var(--soft);margin-top:.45rem}
+.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(14rem,1fr));gap:1rem;margin:2rem 0 0}
+.gallery figure.photo{margin:0}
+.gallery figure.photo img{aspect-ratio:4/3;max-height:none}
+.gallery.two{grid-template-columns:repeat(auto-fit,minmax(18rem,1fr));margin-top:1.5rem}
+.hero-grid{display:grid;grid-template-columns:1fr;gap:3rem;align-items:start}
+.hero-grid:has(figure.me){grid-template-columns:minmax(0,1fr) 17rem}
+figure.photo.me{margin:0}
+figure.photo.me img{aspect-ratio:auto;max-height:none;object-fit:contain}
+@media (max-width:820px){.hero-grid,.hero-grid:has(figure.me){grid-template-columns:1fr}figure.photo.me{max-width:15rem;order:-1}}
+.mtags{list-style:none;margin:.3rem 0 0;padding:0;display:flex;flex-wrap:wrap;gap:.3rem}
+.mtags li{font-size:.78rem;color:var(--ink);background:var(--tint);padding:.12rem .55rem;border-radius:999px}
+.phases{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--line);margin:0 0 1.5rem}
+.phases > div{padding:1rem 1.1rem;border-right:1px solid var(--line)}
+.phases > div:last-child{border-right:0}
+.phases .ph{font-family:var(--serif);font-size:1.15rem;color:var(--red);margin:0 0 .4rem}
+.phases ul{margin:0;padding-left:1rem;font-size:.88rem}
+.phases li{margin-bottom:.25rem}
+@media (max-width:760px){.phases{grid-template-columns:1fr 1fr}.phases > div:nth-child(2){border-right:0}.phases > div:nth-child(-n+2){border-bottom:1px solid var(--line)}}
+@media (max-width:440px){.phases{grid-template-columns:1fr}.phases > div{border-right:0;border-bottom:1px solid var(--line)}}
+.toolgroups{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:2rem 2.5rem}
+.toolgroups > div{border-top:3px solid var(--ink);padding-top:1rem}
+.toolgroups h3{font-size:1.25rem;margin-bottom:.6rem}
+.toolgroups ul{margin:0;padding-left:1.1rem}
+.toolgroups li{margin-bottom:.7rem;font-size:.95rem}
+.toolgroups li span{display:block;color:var(--red);font-size:.85rem;font-weight:500}
+.bar-tools{display:flex;gap:.5rem}
+
+/* experiências e influências */
+.kicker{font-weight:700;font-size:.8rem;letter-spacing:.22em;text-transform:uppercase;color:var(--red);margin:0 0 1rem}
+h2 .dot{color:var(--red)}
+.expitems{border-top:1.5px solid var(--line)}
+.expitem{display:grid;grid-template-columns:5.5rem 1fr 1.15fr;gap:2.5rem;padding:2.5rem 0;border-bottom:1.5px solid var(--line);align-items:start}
+.expnum{font-family:var(--serif);font-size:2.5rem;line-height:1;color:var(--red)}
+.expitem h3{font-size:1.6rem}
+.expwhen{font-size:.85rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--soft);margin:0}
+.exptag{display:inline-block;color:var(--red);font-weight:700;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;margin:0 0 .75rem}
+.expimg{margin-top:1.25rem;width:100%;max-width:30rem;display:block;border:1px solid var(--line)}
+.expclose{margin-top:3.5rem;font-family:var(--serif);font-size:1.5rem;line-height:1.35;max-width:36ch}
+.expclose em{font-style:normal;border-bottom:3px solid var(--red)}
+.explinked{margin-top:2rem;font-weight:700}
+.toolgroups p{font-size:1rem;margin:0}
+@media (max-width:700px){.expitem{grid-template-columns:1fr;gap:.5rem;padding:2rem 0}.expnum{font-size:2rem}}
+</style>
+<script>
+document.addEventListener('error',function(e){var t=e.target;if(t&&t.tagName==='IMG'){var f=t.closest('figure.photo');if(f){var g=f.parentElement;f.remove();if(g&&g.classList.contains('gallery')&&!g.querySelector('figure'))g.remove();}}},true);
+</script>
+</head>
+<body>
+<a class="skip" href="#conteudo">Pular para o conteúdo</a>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="mark" href="#topo">Valéria Reis</a>
+    <nav aria-label="Seções">
+      <ul>
+        <li><a href="#topo">Sobre</a></li>
+        <li><a href="#experiencias">Experiências</a></li>
+        <li><a href="#ferramentas">Ferramentas</a></li>
+        <li><a href="#formacao">Formação</a></li>
+        <li><a href="#casos">Casos</a></li>
+        <li><a href="#contato">Contato</a></li>
+      </ul>
+    </nav>
+    <div class="bar-tools"><button class="textsize" type="button" id="langtoggle" lang="en">English</button>
+    <button class="textsize" type="button" aria-pressed="false" id="textsize">Texto maior</button></div>
+  </div>
+</header>
+
+<main id="conteudo">
+<div class="wrap hero" id="topo">
+  <div class="hero-grid">
+    <div class="hero-text">
+  <h1>Transformo ideias em experiências que fazem sentido para quem usa<span class="dot">.</span></h1>
+  <p class="lede">Sou designer de serviços. Penso na experiência das pessoas desde antes de saber que isso tinha nome, no balcão da loja da minha família e nos eventos que produzi ainda na faculdade. Aprendi a trabalhar com método em empresas de tecnologia, numa fintech e numa big tech. Na Zup (Grupo Itaú), esse olhar ganhou o cargo de Designer de Serviços. Também fundei uma plataforma editorial, hoje trabalho com SaaS e atendo clientes internacionais como freelancer pela Kura & Co.</p>
+  <p class="lede">Também sou pesquisadora independente. Em 2026 fui selecionada para o <a href="https://10x10photobooks.org/10x10-research-grants-cycle-5-2026-2027/">10x10 Photobooks Research Grant</a>, bolsa internacional de pesquisa. Levo o mesmo rigor para o design de serviços: ouvir, levantar evidência e organizar o que encontrei antes de propor qualquer coisa.</p>
+    </div>
+    <figure class="photo me">
+      <img src="imagens/valeria.jpg" alt="Retrato de Valéria Reis" loading="eager">
+      <figcaption>Foto: Aline Costa.</figcaption>
+    </figure>
+  </div>
+</div>
+
+<section id="experiencias">
+  <div class="wrap">
+    <p class="kicker">Em ordem cronológica, do agora pra trás</p>
+    <h2>Experiências e influências<span class="dot">.</span></h2>
+    <p class="intro">O jeito como eu desenho serviços não veio de um manual. Veio de lugares concretos — do mais recente ao mais antigo.</p>
+    <div class="expitems">
+      <div class="expitem"><div class="expnum">01</div>
+        <div><h3>Pesquisa com reconhecimento internacional</h3><p class="expwhen">10x10 Photobooks · 2026–2027</p></div>
+        <div><p>Selecionada para o ciclo 5 da bolsa internacional de pesquisa em história do fotolivro. Meu tema: <b>os fotolivros como atos de permanência — um mapeamento da história da autodocumentação negra no Brasil.</b><br><a class="explink" href="https://10x10photobooks.org/valeria-reis-cycle-5/">Ler sobre a minha pesquisa no 10x10 ↗</a><br><img class="expimg" src="imagens/capa-10x10.png" alt="Capa: Atos de permanência — bolsa internacional 10x10 Photobooks, 2026–2027" loading="lazy"></p></div>
+      </div>
+      <div class="expitem"><div class="expnum">02</div>
+        <div><h3>Experiência de marca ao vivo</h3><p class="expwhen">Kura &amp; Co · freelancer · 2026</p></div>
+        <div><p>Como freelancer pela Kura &amp; Co, construí a experiência de marca <b>“Padoca x João Gomes: Raízes do Brasil”</b> para o cantor e sua equipe durante a turnê na Austrália, unindo música, hospitalidade e cultura brasileira.<br><img class="expimg" src="imagens/capa-padoca.png" alt="Capa: Raízes do Brasil — experiência de marca Padoca x João Gomes" loading="lazy"></p></div>
+      </div>
+      <div class="expitem"><div class="expnum">03</div>
+        <div><h3>Mídia em escala, bastidor orquestrado</h3><p class="expwhen">TikTok · 2024</p></div>
+        <div><p><span class="exptag">Pacotes de mídia</span><br>Pacotes de mídia para anunciantes como Mercado Livre e Magalu, relacionamento direto com agências e datas especiais como a Black Friday. <b>Eu definia o que entrava em cada pacote, os preços contra as metas e as cotas.</b><br><img class="expimg" src="imagens/capa-black-friday.png" alt="Capa: Black Friday — pacotes de mídia, 2024" loading="lazy"></p></div>
+      </div>
+      <div class="expitem"><div class="expnum">04</div>
+        <div><h3>Fotografia e editorial próprio</h3><p class="expwhen">(se)mentes · 2023–hoje</p></div>
+        <div><p>Um anuário inteiro operado com 14 voluntários: cerca de 600 inscritos em 3 edições, um fotolivro por edição, distribuído no Museu das Favelas e em escolas. <b>Curadoria, produção e lançamento com o meu nome.</b><br><img class="expimg" src="imagens/capa-sementes.png" alt="Capa: (se)mentes — editorial próprio" loading="lazy"></p></div>
+      </div>
+      <div class="expitem"><div class="expnum">05</div>
+        <div><h3>Escuta com método</h3><p class="expwhen">Zup · 2020–2021</p></div>
+        <div><p>Grupos focais e o primeiro censo da empresa viraram o framework dos <b>3 E’s — entrar, estar, evoluir</b>, que organiza a jornada inteira do colaborador em três momentos, com responsáveis por cada etapa.</p></div>
+      </div>
+      <div class="expitem"><div class="expnum">06</div>
+        <div><h3>O balcão da loja da família</h3><p class="expwhen">Novos Baianos · 2017–2019</p></div>
+        <div><p>Atendimento, crédito, estoque e as primeiras redes de uma loja de materiais de construção com mais de 30 anos. <b>Fiz experiência do cliente antes de saber que isso tinha nome.</b></p></div>
+      </div>
+      <div class="expitem"><div class="expnum">07</div>
+        <div><h3>Da publicidade ao design de serviço</h3><p class="expwhen">ESPM 2016 · Tera 2020</p></div>
+        <div><p>Comunicação Social na ESPM e a transição para UX e design de serviço na Tera, como bolsista. A base de comunicação é o que me faz desenhar serviço pensando em narrativa, não só em fluxo.</p></div>
+      </div>
+      <div class="expitem"><div class="expnum">08</div>
+        <div><h3>Palco e facilitação</h3><p class="expwhen">Marias do Bar 2014 · Formações 2022–2024</p></div>
+        <div><p>Do curso de coquetelaria para 15 mulheres na Bacardi às formações sobre carreira e cultura para <b>mais de 3.000 profissionais</b> em empresas como PwC, Itaú e Volkswagen — cada uma desenhada do briefing à facilitação.</p></div>
+      </div>
+    </div>
+    <p class="expclose">É desses lugares que sai o método — <em>pesquisa, síntese, desenho e entrega</em> — aplicado em cada caso abaixo.</p>
+    <p class="explinked">Meu LinkedIn: <a href="https://www.linkedin.com/in/valeriareis">linkedin.com/in/valeriareis ↗</a></p>
+  </div>
+</section>
+
+<section id="ferramentas">
+  <div class="wrap">
+    <p class="kicker">Ferramentas</p>
+    <h2>Ferramentas de trabalho<span class="dot">.</span></h2>
+    <div class="toolgroups">
+      <div><h3>Gestão de projetos</h3><p>Asana · ClickUp · Trello · Jira · Notion · Miro</p></div>
+      <div><h3>Comunicação e canais</h3><p>Slack · Google Workspace · WhatsApp Business · Instagram e LinkedIn</p></div>
+      <div><h3>Dados, pesquisa e operação</h3><p>Google Sheets e Docs · Google Forms · Qulture Rocks · Shopify</p></div>
+      <div><h3>Marketing e automação</h3><p>RD Station</p></div>
+      <div><h3>IA no dia a dia</h3><p>Claude · ChatGPT</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="formacao">
+  <div class="wrap">
+    <p class="kicker">Formação</p>
+    <h2>Formação<span class="dot">.</span></h2>
+    <ol class="timeline">
+      <li><div class="yr">2016</div><div><h3>ESPM</h3><p class="role">Graduação em Comunicação Social, Publicidade e Propaganda</p></div></li>
+      <li><div class="yr">2020</div><div><h3>Tera</h3><p class="role">UX Design e Design de Serviço, como bolsista</p><p class="go"><a href="https://somostera.com/blog/de-comunicadora-a-ux-como-valeria-tem-criado-experiencias-que-valorizam-diversidade">Ler a entrevista na Tera sobre essa transição</a></p></div></li>
+      <li><div class="yr">2021</div><div><h3>PUCRS</h3><p class="role">MBA em Liderança, Inovação e Gestão 3.0</p></div></li>
+      <li><div class="yr">2022</div><div><h3>USP</h3><p class="role">Extensão em Diversidade e Direitos Humanos</p></div></li>
+      <li><div class="yr">Em curso</div><div><h3>FGV</h3><p class="role">Pós-graduação em Marketing Digital</p></div></li>
+    </ol>
+  </div>
+</section>
+
+<div id="casos"></div>
+
+<!-- CASE 1: ZUP -->
+<article class="case" id="caso-zup" aria-labelledby="t-zup">
+  <div class="wrap">
+    <div class="case-head">
+      <div>
+        <p class="when">2020–2021</p>
+        <h2 id="t-zup">Zup: os 3 E’s, um framework para a jornada do colaborador</h2>
+        <p class="read">Uma empresa de tecnologia do Grupo Itaú em crescimento acelerado, contratando sem parar. No time de Employee Experience, tratei a empresa como um serviço cujo usuário é quem trabalha nela. A partir de pesquisa com colaboradores, criei o framework dos 3 E’s, que organiza a jornada inteira em três momentos: entrar, estar e evoluir.</p>
+      </div>
+      <dl class="facts">
+        <div><dt>Meu papel</dt><dd>Designer de Serviços em Employee Experience, promovida a Analista</dd></div>
+        <div><dt>Ferramentas</dt><dd>Design thinking, Miro, Google Forms</dd></div>
+        <div><dt>Links</dt><dd><a href="https://ehavaleria.medium.com/como-a-vis%C3%A3o-de-designer-de-servi%C3%A7os-criou-uma-estrat%C3%A9gia-de-diversidade-ec30a5dbf235">Artigo em que apresentei os 3 E’s (Medium, 2021)</a><br><a href="https://zup.com.br/blog/diversidade-na-zup/">Blog da Zup sobre o trabalho da área</a></dd></div>
+        <div><dt>Métodos e frameworks</dt><dd><ul class="mtags"><li>Grupos focais</li><li>Entrevistas qualitativas</li><li>Censo (pesquisa quantitativa)</li><li>Personas</li><li>Framework 3 E’s</li><li>Mapa de jornada</li><li>Responsáveis por etapa</li><li>Design thinking</li></ul></dd></div>
+      </dl>
+    </div>
+    <div class="phases" role="group" aria-label="Etapas do método neste caso">
+      <div><p class="ph">Descobrir</p><ul><li>Grupos focais e entrevistas com colaboradores</li><li>Primeiro censo da empresa</li></ul></div>
+      <div><p class="ph">Definir</p><ul><li>Síntese das dores em três momentos</li><li>Framework 3 E’s e personas</li></ul></div>
+      <div><p class="ph">Desenvolver</p><ul><li>Mapa da jornada com pontos de contato</li><li>Responsáveis de bastidor por etapa</li><li>Proposta de onboarding em trilhas</li></ul></div>
+      <div><p class="ph">Entregar</p><ul><li>Ações de cultura, comunicação interna e marca empregadora</li><li>eNPS e turnover acompanhados</li></ul></div>
+    </div>
+
+    <details class="more">
+      <summary><span class="open-t">Ver o caso completo</span><span class="close-t">Recolher o caso</span></summary>
+      <div class="more-body">
+
+    <div class="cols">
+      <div>
+        <h4>O framework</h4>
+        <p><b>Entrar</b> reúne atração, seleção e onboarding: da primeira campanha que a pessoa vê até o primeiro contato com a liderança e com o time. <b>Estar</b> cobre o dia a dia: estrutura, benefícios, saúde, bem-estar e cultura. <b>Evoluir</b> trata de treinamento, carreira, reconhecimento e promoções.</p>
+        <p>A jornada fecha com o desligamento, que também foi mapeado. Cada momento ganhou seus pontos de contato e as áreas responsáveis por eles nos bastidores.</p>
+      </div>
+      <div>
+        <h4>Escuta</h4>
+        <p>Conduzi grupos focais e entrevistas qualitativas com colaboradores de perfis e trajetórias diferentes, para entender as principais dores de cada um ao longo da jornada. Em setembro de 2020, conduzi também o primeiro censo da Zup, um levantamento de perfil e de pertencimento de toda a empresa.</p>
+        <p>O achado central: mesmo com contextos diferentes, as dores se concentravam nos mesmos três momentos. Foi daí que nasceram os 3 E’s.</p>
+      </div>
+    </div>
+
+    <blockquote class="callout">Personas diferentes podem ter pontos de atrito diferentes na jornada.<cite>Princípio escrito no próprio mapa da jornada, 2021</cite></blockquote>
+
+    <h4>Estratégias diferentes, o mesmo objetivo</h4>
+    <p class="read">A consequência prática do framework: quando os usuários têm necessidades diferentes, alguns processos não podem ser iguais para todos. O onboarding, por exemplo, foi proposto como trilhas que se adaptam a cada persona, todas chegando ao mesmo resultado: uma boa experiência de chegada. Os pontos críticos de cada momento viraram ações de cultura, comunicação interna e marca empregadora.</p>
+
+    <figure class="photo">
+      <img src="https://miro.medium.com/v2/resize:fit:1200/1*V_dNQuibfGo_meoDue16JQ.png" alt="Imagem de capa do artigo sobre os 3 E’s publicado no Medium" loading="lazy">
+      <figcaption>Capa do artigo original em que publiquei o framework, em janeiro de 2021.</figcaption>
+    </figure>
+
+    <figure class="artifact">
+      <p class="label">Mapa da jornada do colaborador na Zup, organizado nos 3 E’s</p>
+      <p class="sub">Do mapa original de 2021, com os pontos de contato e as áreas responsáveis em cada etapa. Role a tabela para o lado.</p>
+      <div class="scroll" tabindex="0" role="region" aria-label="Jornada da Zup nos 3 E's, role para o lado">
+        <table class="bp ee">
+          <thead>
+            <tr class="e"><th scope="col" class="out"></th><th scope="colgroup" colspan="2">Entrar na Zup</th><th scope="col">Estar na Zup</th><th scope="col">Evoluir na Zup</th><th scope="col" class="out">Sair</th></tr>
+            <tr><th scope="col"><span class="note">Etapa</span></th><th scope="col">Atração e seleção</th><th scope="col">Onboarding</th><th scope="col">Estrutura e bem-estar</th><th scope="col">Treinamento e desenvolvimento</th><th scope="col">Desligamento</th></tr>
+          </thead>
+          <tbody>
+            <tr class="vis"><th scope="row">Pontos de contato</th>
+              <td><ul><li>Campanhas e relacionamento</li><li>Candidatura e testes</li><li>Entrevistas e proposta</li><li>Devolutivas, inclusive as negativas</li></ul></td>
+              <td><ul><li>Admissão, documentos e exame</li><li>Kit e equipamentos</li><li>Orientações iniciais e apresentação do negócio</li><li>Chegada à área, contato com liderança e pares</li></ul></td>
+              <td><ul><li>Remuneração e benefícios</li><li>Saúde, segurança e licenças</li><li>Controle de jornada</li><li>Ações de cultura e datas importantes</li></ul></td>
+              <td><ul><li>Treinamentos iniciais e academia interna</li><li>Gestão de performance e 1:1</li><li>Carreira e oportunidades</li><li>Reconhecimento e promoções</li></ul></td>
+              <td><ul><li>Desligamento voluntário</li><li>Desligamento involuntário</li><li>Aposentadoria</li></ul></td></tr>
+            <tr><th scope="row">Quem responde nos bastidores</th>
+              <td>Talent, marketing e employer branding</td>
+              <td>Departamento pessoal, Employee Experience, liderança, TI interna, facilities</td>
+              <td>Departamento pessoal, saúde e segurança, BPs, Employee Experience</td>
+              <td>Liderança, educação corporativa, BPs</td>
+              <td>BPs, departamento pessoal, liderança</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </figure>
+
+    <div class="numbers">
+      <div><b>3 E’s</b><span>entrar, estar e evoluir, como estrutura da jornada</span></div>
+      <div><b>1º</b><span>censo da Zup, base da estratégia da área</span></div>
+      <div><b>eNPS ↑</b><span>alta registrada no período, com queda do turnover</span></div>
+      <div><b>2020</b><span>time reconhecido pela Endeavor, categoria scale-up</span></div>
+    </div>
+    <p class="note">Indicadores e reconhecimento são resultado de equipe. Em menos de um ano fui promovida de Designer de Serviços a Analista.</p>
+
+    <div class="next">
+      <h4>O que levei daqui</h4>
+      <p>O mapa mostrava que o atrito era diferente para cada perfil de pessoa. O censo mostrava quem estava na empresa. Desde então, jornada e pesquisa andam juntas no meu trabalho: na Padoca, foram as conversas reais do WhatsApp que definiram os tipos de pessoa do atendimento.</p>
+    </div>
+      </div>
+    </details>
+  </div>
+</article>
+
+<!-- CASE 2: WILL -->
+<article class="case" id="caso-will" aria-labelledby="t-will">
+  <div class="wrap">
+    <div class="case-head">
+      <div>
+        <p class="when">2021–2023</p>
+        <h2 id="t-will">Will Bank: a jornada do colaborador numa fintech em crescimento</h2>
+        <p class="read">No Will, a pergunta saiu do mapa e foi para a operação: o que a pessoa encontra em cada momento da jornada, e quem garante que isso aconteça mesmo com a empresa mudando toda semana.</p>
+      </div>
+      <dl class="facts">
+        <div><dt>Meu papel</dt><dd>Analista Sênior, depois Coordenadora de Cultura e Pessoas com foco em experiência do colaborador, com 5 pessoas no time</dd></div>
+        <div><dt>Ferramentas</dt><dd>Google Forms, Jira, Trello, Slack, Qulture Rocks</dd></div>
+        <div><dt>Métodos e frameworks</dt><dd><ul class="mtags"><li>Pesquisa de engajamento</li><li>Mapa de jornada</li><li>Service blueprint</li><li>Desenho de programas</li><li>Capacitação de lideranças</li><li>Indicadores para liderança</li></ul></dd></div>
+      </dl>
+    </div>
+    <div class="phases" role="group" aria-label="Etapas do método neste caso">
+      <div><p class="ph">Descobrir</p><ul><li>Pesquisas de engajamento e cultura</li></ul></div>
+      <div><p class="ph">Definir</p><ul><li>Planos de ação a partir das pesquisas</li><li>Prioridades por momento da jornada</li></ul></div>
+      <div><p class="ph">Desenvolver</p><ul><li>Onboarding, mentorias e bootcamps</li><li>Service blueprint do canal de denúncia</li><li>Comitê e código de ética</li></ul></div>
+      <div><p class="ph">Entregar</p><ul><li>Operação com time de 5 pessoas</li><li>Treinamentos para lideranças</li><li>Indicadores reportados à liderança</li></ul></div>
+    </div>
+
+    <details class="more">
+      <summary><span class="open-t">Ver o caso completo</span><span class="close-t">Recolher o caso</span></summary>
+      <div class="more-body">
+
+    <figure class="artifact">
+      <p class="label">Jornada do colaborador no Will, com o que desenhei e operei em cada momento</p>
+      <p class="sub">Leitura retrospectiva, montada para o portfólio a partir do escopo da área. Role para o lado.</p>
+      <div class="scroll" tabindex="0" role="region" aria-label="Jornada do colaborador no Will, role para o lado">
+        <div class="ex-journey">
+          <div><b>Ser atraída</b>Como a empresa aparece para quem pensa em trabalhar nela.<span class="where">Eventos, patrocínios, podcasts e aproximação de comunidades</span></div>
+          <div><b>Chegar</b>O que a pessoa encontra nos primeiros dias.<span class="where">Programa de onboarding</span></div>
+          <div><b>Crescer</b>Caminhos de aprendizado e acompanhamento.<span class="where">Mentorias, bootcamps, PDI e ciclos de performance</span></div>
+          <div><b>Pertencer</b>Onde encontrar pares e ter voz.<span class="where">Comunidade interna com mais de 100 pessoas e comitê</span></div>
+          <div><b>Ser ouvida</b>Pesquisa que vira plano de ação.<span class="where">Pesquisas de engajamento e cultura</span></div>
+          <div><b>Estar segura</b>Para onde levar um problema sério.<span class="where">Canal de denúncia e código de ética atualizado</span></div>
+        </div>
+      </div>
+    </figure>
+
+    <div class="cols">
+      <div>
+        <h4>Escuta que vira decisão</h4>
+        <p>As pesquisas de engajamento e cultura viraram planos de ação, com indicadores levados à liderança.</p>
+        <h4>Capacitação das lideranças</h4>
+        <p>Treinamentos para equipes e lideranças, para que a experiência desenhada no papel chegasse ao dia a dia de cada time.</p>
+      </div>
+      <div>
+        <h4>Um serviço em que confiar é a condição</h4>
+        <p>Estruturei o canal de denúncia, o comitê e a atualização do código de ética. Desenhei o fluxo do canal em service blueprint, separando o que a pessoa que denuncia vê do que acontece nos bastidores até a resposta. Num serviço assim, a pessoa só usa se confiar que vai ser ouvida sem se expor.</p>
+        <h4>Gestão do time</h4>
+        <p>Coordenei 5 pessoas, com ciclos de performance, PDI e feedbacks, sustentando os programas na operação.</p>
+      </div>
+    </div>
+
+    <div class="numbers">
+      <div><b>5</b><span>pessoas no time que coordenei</span></div>
+      <div><b>100+</b><span>pessoas na comunidade interna</span></div>
+      <div><b>51%</b><span>de mulheres no quadro, resultado para o qual contribuí</span></div>
+      <div><b>44%</b><span>de pessoas negras no quadro, no mesmo período</span></div>
+    </div>
+
+    <div class="next">
+      <h4>O que levei daqui</h4>
+      <p>O blueprint do canal de denúncia deixou claro que, em serviço sensível, o que a pessoa vê enquanto espera pesa tanto quanto a resposta. Levei isso para a Padoca: no atendimento, uma reclamação é acolhida na hora e resolvida por uma pessoa, nunca por mensagem automática.</p>
+    </div>
+      </div>
+    </details>
+  </div>
+</article>
+
+<!-- CASE 2 -->
+<article class="case" id="caso-sementes" aria-labelledby="t-sementes">
+  <div class="wrap">
+    <div class="case-head">
+      <div>
+        <p class="when">2023–hoje</p>
+        <h2 id="t-sementes">(se)mentes: o blueprint de um anuário</h2>
+        <p class="read">A (se)mentes documenta trajetórias de profissionais negros no Brasil em anuários impressos e digitais. Por fora, é um livro. Por dentro, é um serviço com chamada nacional, triagem, curadoria, entrevista, retrato, edição, gráfica, evento e circulação, sustentado por voluntários.</p>
+      </div>
+      <dl class="facts">
+        <div><dt>Meu papel</dt><dd>Idealizadora, direção editorial e curadoria-geral; coordeno 14 voluntários de criação, produção, fotografia e atendimento</dd></div>
+        <div><dt>Ferramentas</dt><dd>Notion, Google Workspace, WhatsApp Business, Instagram e LinkedIn</dd></div>
+        <div><dt>Edições</dt><dd><a href="https://www.somossementes.com/historias">Anuário 2023</a><br><a href="https://anuariosementes.com/2024">Anuário 2024</a><br><a href="https://anuariosementes.com/2025">Anuário 2025</a></dd></div>
+        <div><dt>Links</dt><dd><a href="https://almapreta.com.br/sessao/cotidiano/projeto-lanca-livro-com-trajetorias-de-profissionais-negros/">Matéria na Alma Preta Jornalismo</a><br><a href="https://www.instagram.com/somossementesoficial/">Instagram @somossementesoficial</a><br><a href="https://www.linkedin.com/company/projetosementes">LinkedIn da (se)mentes</a></dd></div>
+        <div><dt>Métodos e frameworks</dt><dd><ul class="mtags"><li>Pesquisa qualitativa</li><li>Curadoria</li><li>Service blueprint</li><li>Mapa de stakeholders</li><li>Operação com voluntários</li></ul></dd></div>
+      </dl>
+    </div>
+    <div class="phases" role="group" aria-label="Etapas do método neste caso">
+      <div><p class="ph">Descobrir</p><ul><li>Chamada nacional aberta</li><li>Leitura de mais de 600 inscrições</li></ul></div>
+      <div><p class="ph">Definir</p><ul><li>Critérios de curadoria</li><li>Recorte de cada edição</li></ul></div>
+      <div><p class="ph">Desenvolver</p><ul><li>Service blueprint da operação</li><li>Papéis dos 14 voluntários</li><li>Mapa de stakeholders</li></ul></div>
+      <div><p class="ph">Entregar</p><ul><li>Anuário impresso e digital aberto</li><li>Lançamento e circulação</li></ul></div>
+    </div>
+
+    <figure class="photo">
+      <img src="imagens/sementes-anuario-aberto.jpg" alt="Anuário (se)mentes aberto, mostrando uma página dupla com retrato e texto de uma trajetória" loading="lazy">
+      <figcaption>Anuário (se)mentes impresso. Foto: Panda Delas.</figcaption>
+    </figure>
+
+    <details class="more">
+      <summary><span class="open-t">Ver o caso completo</span><span class="close-t">Recolher o caso</span></summary>
+      <div class="more-body">
+
+    <p class="read">O desafio de desenho foi de duas pontas. Para quem se inscreve, contar a própria história para desconhecidos exige confiança, e a resposta precisa chegar com cuidado, seja ela sim ou não. Para quem opera, tudo depende de voluntários com pouco tempo, então cada etapa precisava de um dono e de uma ferramenta simples.</p>
+
+    <figure class="artifact">
+      <p class="label">Service blueprint do ciclo de uma edição</p>
+      <p class="sub">Reconstruído para este portfólio a partir da operação real das três edições. Role a tabela para o lado.</p>
+      <div class="scroll" tabindex="0" role="region" aria-label="Blueprint da (se)mentes, role para o lado">
+        <table class="bp">
+          <caption class="note" style="caption-side:bottom;text-align:left;padding:.6rem .75rem">Linhas: o que a pessoa toca, o que ela faz, o que a equipe faz à vista, o que acontece nos bastidores e o que sustenta tudo.</caption>
+          <thead>
+            <tr><th scope="col"><span class="note">Etapa</span></th><th scope="col">Chamada</th><th scope="col">Inscrição</th><th scope="col">Curadoria</th><th scope="col">Entrevista e retrato</th><th scope="col">Edição</th><th scope="col">Lançamento</th><th scope="col">Circulação</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Evidência física</th><td>Posts da chamada nas redes</td><td>Formulário de inscrição</td><td>Mensagem com o resultado</td><td>Sessão de fotos e conversa</td><td>Prova do texto</td><td>Evento e o anuário impresso</td><td>Exemplares em instituições e site aberto</td></tr>
+            <tr class="line"><th scope="row">Ação da pessoa</th><td>Descobre a chamada, muitas vezes por indicação</td><td>Conta a própria trajetória</td><td>Aguarda</td><td>É ouvida e fotografada</td><td>Revisa como foi contada</td><td>Vai ao lançamento com quem quiser levar</td><td>Compartilha, presenteia, é encontrada</td></tr>
+            <tr class="vis"><th scope="row">Linha de frente</th><td>Comunicação no Instagram e LinkedIn</td><td>Atendimento a dúvidas pelo WhatsApp</td><td>Contato com quem foi selecionado</td><td>Equipe de fotografia e entrevista</td><td>Retorno da edição</td><td>Equipe de recepção e produção no evento</td><td>Divulgação e relação com parceiros</td></tr>
+            <tr><th scope="row">Bastidores</th><td>Definição do recorte da edição</td><td>Organização das inscrições</td><td>Leitura e critérios de seleção</td><td>Agenda de produção</td><td>Texto, edição, diagramação, gráfica</td><td>Produção do evento</td><td>Distribuição dos exemplares</td></tr>
+            <tr><th scope="row">Suporte</th><td colspan="2">Notion, Google Workspace, WhatsApp Business</td><td colspan="2">14 voluntários com função definida</td><td colspan="2">Parcerias e apoios, como Uber, Fundação Theatro Municipal e gráfica parceira</td><td>Site anuariosementes.com</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="legend"><span class="l1">linha de interação</span><span class="l2">linha de visibilidade</span></p>
+    </figure>
+
+    <figure class="artifact">
+      <p class="label">Mapa de stakeholders da (se)mentes</p>
+      <p class="sub">Reconstruído para o portfólio. Do centro para fora: quem o serviço existe para atender, quem faz ele acontecer e quem sustenta ou amplia.</p>
+      <div class="rings">
+        <h5>Ecossistema que sustenta e amplia</h5>
+        <ul><li>Empresas e instituições parceiras, como Uber e Fundação Theatro Municipal</li><li>Gráfica parceira</li><li>Instituições e organizações que recebem os exemplares</li><li>Imprensa, como a Alma Preta Jornalismo</li><li>Público dos eventos de lançamento</li></ul>
+        <div class="ring">
+          <h5>Quem faz acontecer</h5>
+          <ul><li>Direção editorial e curadoria</li><li>Voluntários de criação, produção, fotografia e atendimento</li></ul>
+          <div class="ring core">
+            <h5>Para quem o serviço existe</h5>
+            <ul><li>Profissionais que se inscrevem</li><li>Profissionais selecionados e publicados</li><li>Quem lê os anuários, impressos ou no site</li></ul>
+          </div>
+        </div>
+      </div>
+    </figure>
+
+    <div class="cols">
+      <div>
+        <h4>Decisões de desenho</h4>
+        <p>Chamada nacional aberta, para que a seleção não dependesse de quem eu já conhecia. O resultado foram inscrições de 12 estados.</p>
+        <p>Formato impresso e digital aberto ao mesmo tempo. O mesmo conteúdo chega a uma biblioteca e ao celular de quem nunca entraria numa livraria.</p>
+      </div>
+      <div>
+        <h4>O que mostra sobre o meu trabalho</h4>
+        <p>Desenho e opero um serviço de ponta a ponta sem estrutura de empresa: com voluntários, parcerias e ferramentas gratuitas. É o mesmo raciocínio que levo para times pequenos dentro de empresas grandes.</p>
+      </div>
+    </div>
+
+    <div class="gallery">
+      <figure class="photo">
+        <img src="imagens/sementes-2025.jpg" alt="Edição 2025 do anuário (se)mentes" loading="lazy">
+        <figcaption>Edição 2025.</figcaption>
+      </figure>
+      <figure class="photo">
+        <img src="imagens/sementes-lancamento-2025.jpg" alt="Backdrop do evento de lançamento do anuário 2025" loading="lazy">
+        <figcaption>Lançamento 2025, Praça das Artes. Foto: acervo pessoal.</figcaption>
+      </figure>
+      <figure class="photo">
+        <img src="imagens/sementes-lancamento-2023.jpg" alt="Evento de lançamento da primeira edição, em 2023" loading="lazy">
+        <figcaption>Lançamento 2023. Foto: Level Group.</figcaption>
+      </figure>
+    </div>
+
+    <div class="numbers">
+      <div><b>3</b><span>edições publicadas, 2023, 2024 e 2025</span></div>
+      <div><b>600+</b><span>inscrições recebidas</span></div>
+      <div><b>90</b><span>trajetórias documentadas em mais de 30 áreas</span></div>
+      <div><b>12</b><span>estados com presença</span></div>
+      <div><b>150–200</b><span>pessoas por evento de lançamento</span></div>
+    </div>
+    <p class="note">A terceira edição foi lançada na Praça das Artes, do Theatro Municipal de São Paulo, em novembro de 2025. O projeto teve cobertura da <a href="https://almapreta.com.br/sessao/cotidiano/projeto-lanca-livro-com-trajetorias-de-profissionais-negros/">Alma Preta Jornalismo</a> e já distribuiu mais de 400 exemplares impressos para instituições e organizações parceiras.</p>
+
+    <div class="next">
+      <h4>Próximo passo</h4>
+      <p>Acompanhar o que muda para quem foi publicado nos meses seguintes ao lançamento. É a etapa do serviço que ainda não está no blueprint, e provavelmente onde está o maior valor.</p>
+    </div>
+      </div>
+    </details>
+  </div>
+</article>
+
+<!-- CASE 3 -->
+<article class="case" id="caso-padoca" aria-labelledby="t-padoca">
+  <div class="wrap">
+    <div class="case-head">
+      <div>
+        <p class="when">2026</p>
+        <h2 id="t-padoca">Padoca: site, WhatsApp e cozinha desenhados juntos</h2>
+        <p class="read">Uma padaria artesanal brasileira em Brisbane, na Austrália. Vende pelo site (Shopify), na loja (Square), por WhatsApp e Instagram, e para dois clientes fixos de atacado. Quem produz, atende e decide é praticamente uma pessoa só: o Pedro, dono da padaria.</p>
+      </div>
+      <dl class="facts">
+        <div><dt>Meu papel</dt><dd>Consultoria pela Kura &amp; Co, em parceria com o SÈVE Studio. O diagnóstico do site foi feito em dupla com a Kamilla.</dd></div>
+        <div><dt>Ferramentas</dt><dd>Shopify, WhatsApp Business, Google Sheets e Docs</dd></div>
+        <div><dt>Links</dt><dd><a href="https://padoca-au.com">Site padoca-au.com</a><br><a href="https://www.instagram.com/padoca_au/">Instagram @padoca_au</a></dd></div>
+        <div><dt>Métodos e frameworks</dt><dd><ul class="mtags"><li>Análise operacional</li><li>Benchmarking</li><li>Estado atual e futuro</li><li>Arquétipos de usuário</li><li>Princípios de experiência</li><li>Arquitetura da experiência</li><li>Service blueprint</li><li>Mapa de stakeholders</li><li>Roadmap em fases</li><li>Indicadores</li></ul></dd></div>
+      </dl>
+    </div>
+    <div class="phases" role="group" aria-label="Etapas do método neste caso">
+      <div><p class="ph">Descobrir</p><ul><li>Análise de relatos de produção, conversas reais e Shopify</li><li>Auditoria do site</li><li>Benchmarking de plataformas e padarias</li></ul></div>
+      <div><p class="ph">Definir</p><ul><li>Mapa de estado atual e futuro</li><li>Cinco arquétipos de quem procura a Padoca</li><li>Princípios de experiência</li></ul></div>
+      <div><p class="ph">Desenvolver</p><ul><li>Página inicial em nove etapas</li><li>Regra automatizar repetição, humanizar decisão</li><li>Copy bilíngue</li><li>Blueprint da encomenda</li></ul></div>
+      <div><p class="ph">Entregar</p><ul><li>Roadmap em cinco fases e site no ar</li><li>Procedimentos e modelo comercial</li><li>Cinco indicadores de atendimento</li></ul></div>
+    </div>
+
+    <figure class="photo">
+      <img src="https://padoca-au.com/cdn/shop/files/pomelli_photoshoot_image_1_1_0916.png?v=1789734414&amp;width=1600" alt="Abertura do site da Padoca com a frase Flavours that make you feel at home" loading="lazy">
+      <figcaption>Abertura do site redesenhado, no ar em padoca-au.com: “Flavours that make you feel at home. Inspired by saudade. Baked in Brisbane.”</figcaption>
+    </figure>
+    <div class="gallery">
+      <figure class="photo">
+        <img src="https://padoca-au.com/cdn/shop/files/Carolina.png?v=1789227415&amp;width=533" alt="Carolinas de doce de leite da Padoca" loading="lazy">
+        <figcaption>Carolinas de Doce de Leite, com nome original e explicação na própria descrição.</figcaption>
+      </figure>
+      <figure class="photo">
+        <img src="https://padoca-au.com/cdn/shop/files/Pao_de_mel.png?v=1789423855&amp;width=533" alt="Pão de mel da Padoca" loading="lazy">
+        <figcaption>Pão de Mel, o doce que deu origem à marca.</figcaption>
+      </figure>
+      <figure class="photo">
+        <img src="https://padoca-au.com/cdn/shop/files/Bolo_de_Cenoura.png?v=1789229259&amp;width=533" alt="Bolo de cenoura com brigadeiro da Padoca" loading="lazy">
+        <figcaption>Bolo de Cenoura com Brigadeiro.</figcaption>
+      </figure>
+    </div>
+    <p class="note" style="margin-top:.75rem">Imagens do site da Padoca. A nova navegação já separa os caminhos de cada público: doces, bolos, presentes, catering e eventos, história e uma página própria para negócios (B2B).</p>
+
+    <details class="more">
+      <summary><span class="open-t">Ver o caso completo</span><span class="close-t">Recolher o caso</span></summary>
+      <div class="more-body">
+
+    <div class="cols">
+      <div>
+        <h4>Quem chega a este serviço</h4>
+        <p>Brasileiros com saudade de um sabor específico. Australianos e outros moradores de Brisbane que nunca ouviram falar de brigadeiro. Quem quer pedir rápido, quem quer encomendar um bolo para uma festa, cafés interessados em revender.</p>
+        <p>E o próprio Pedro, que também é usuário do serviço: cada minuto que ele passa respondendo “que horas vocês abrem?” é um minuto fora da cozinha.</p>
+      </div>
+      <div>
+        <h4>Escuta</h4>
+        <p>Análise da operação a partir de relatos de produção, conversas reais do WhatsApp e dados do Shopify. Leitura do site atual tela por tela, análise do Instagram, comparação com outras padarias e com as plataformas que negócios de alimentação usam.</p>
+      </div>
+    </div>
+
+    <blockquote class="callout">O site informava, mas não seduzia. E não conduzia o cliente com clareza até o pedido.<cite>Diagnóstico do redesenho do site, junho de 2026</cite></blockquote>
+
+    <figure class="artifact">
+      <p class="label">Mapa de estado atual e futuro do site</p>
+      <p class="sub">Do documento de redesenho estratégico, junho de 2026.</p>
+      <div class="scroll" tabindex="0" role="region" aria-label="Estado atual e futuro, role para o lado">
+        <table class="cmp">
+          <thead><tr><th scope="col">Área</th><th scope="col">Como estava</th><th scope="col">Como deveria funcionar</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Página inicial</th><td>Promessa interessante, mas genérica, e pouca construção de desejo antes da vitrine</td><td>Abertura emocional, produtos de entrada, história, prova social e caminhos claros para comprar</td></tr>
+            <tr><th scope="row">Produtos</th><td>Formato de catálogo, com pouca curadoria e pouca explicação de ocasiões de consumo</td><td>Organizados por desejo e uso: mais vendidos, bolos, doces brasileiros, presentes, eventos e encomendas</td></tr>
+            <tr><th scope="row">História</th><td>A história do Pedro e da avó aparecia pequena demais</td><td>A narrativa vira ativo de marca: Brasil, memória afetiva, artesanato e imigração</td></tr>
+            <tr><th scope="row">Encomendas</th><td>Página simples, com pouca orientação sobre processo, prazos e opções</td><td>Página com galeria, sabores, tamanhos, processo, prazos, dúvidas frequentes e formulário claro</td></tr>
+            <tr><th scope="row">Conversão</th><td>Poucas provas sociais, poucos caminhos intermediários e pouca redução de dúvidas</td><td>Avaliações, perguntas frequentes, retirada e entrega explicadas, mais vendidos e chamadas por contexto</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </figure>
+
+    <h4>Decisão 1: manter a plataforma e redesenhar a experiência</h4>
+    <p class="read">A tentação era trocar de plataforma. A recomendação foi manter o Shopify. O gargalo era a experiência, não a tecnologia, e o Pedro já sabia operar o sistema. Migrar traria risco operacional sem garantia de vender mais. O plano foi testar três temas gratuitos antes de pagar por um tema premium.</p>
+
+    <h4>Decisão 2: uma página inicial que responde uma pergunta a cada rolagem</h4>
+    <p class="read">A home virou uma sequência de nove etapas, cada uma com uma função. A regra de UX que escrevemos: a cada rolagem, o cliente recebe uma resposta.</p>
+
+    <figure class="artifact">
+      <p class="label">Mapa da nova página inicial</p>
+      <p class="sub">Do documento de redesenho. Na faixa vermelha, a pergunta do cliente que cada trecho responde.</p>
+      <div class="scroll" tabindex="0" role="region" aria-label="Mapa da página inicial, role para o lado">
+        <ol class="flow">
+          <li><b>Abertura</b>Promessa clara, imagem forte, botão para comprar ou encomendar</li>
+          <li><b>Mais vendidos</b>Os produtos mais desejados, para reduzir a indecisão</li>
+          <li><b>Categorias</b>Bolos, doces brasileiros, pães, presentes, eventos</li>
+          <li><b>Nossa história</b>Pedro, a avó, o Brasil, o artesanal</li>
+          <li><b>Encomendas</b>Bolos personalizados com processo simples</li>
+          <li><b>Eventos</b>Abre a venda para empresas e ocasiões maiores</li>
+          <li><b>Prova social</b>Avaliações, fotos de clientes e eventos</li>
+          <li><b>Dúvidas</b>Prazos, retirada, entrega, conservação, pagamento</li>
+          <li><b>Fechamento</b>Escolher, encomendar ou falar com a Padoca</li>
+        </ol>
+        <div class="qrow">
+          <div>O que é isso?</div>
+          <div>Por que eu quero?</div>
+          <div>Como eu escolho?</div>
+          <div>Por que eu quero?</div>
+          <div class="span2">Como eu escolho?</div>
+          <div class="span2">Por que eu confio?</div>
+          <div>Como eu compro?</div>
+        </div>
+      </div>
+    </figure>
+
+    <figure class="artifact">
+      <p class="label">Do mapa ao site no ar</p>
+      <p class="sub">O que a nova página inicial e o menu do padoca-au.com já entregam de cada etapa planejada, conferido no site em outubro de 2026.</p>
+      <div class="scroll" tabindex="0" role="region" aria-label="Do mapa ao site no ar, role para o lado">
+        <table class="cmp">
+          <thead><tr><th scope="col">Etapa planejada</th><th scope="col">Como aparece no site</th><th scope="col">Situação</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Abertura</th><td>“Flavours that make you feel at home. Inspired by saudade. Baked in Brisbane.” com botão Shop Now</td><td>No ar</td></tr>
+            <tr><th scope="row">Mais vendidos</th><td>Vitrine de produtos em destaque logo abaixo da abertura</td><td>No ar</td></tr>
+            <tr><th scope="row">Categorias</th><td>Menu com Sweet Treats, Cakes e Gifts &amp; Special Products</td><td>No ar</td></tr>
+            <tr><th scope="row">Nossa história</th><td>Bloco Our Story na página inicial e página Our history</td><td>No ar</td></tr>
+            <tr><th scope="row">Encomendas</th><td>Bolos de festa com escolha de tamanho, massa e recheio</td><td>No ar</td></tr>
+            <tr><th scope="row">Eventos e negócios</th><td>Páginas Catering &amp; Events e B2B, separadas no menu</td><td>No ar</td></tr>
+            <tr><th scope="row">Prova social e dúvidas</th><td>Avaliações e perguntas frequentes ainda não aparecem na página inicial</td><td>Próxima etapa</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </figure>
+
+    <h4>Decisão 3: escrever para dois públicos sem que um precise da explicação do outro</h4>
+    <p class="read">Os nomes dos produtos ficam em português, com o equivalente em inglês ao lado. A descrição explica o suficiente para quem está descobrindo e reconhece a memória de quem já conhece. No atendimento, a regra de voz foi soar brasileira sem precisar explicar o Brasil o tempo inteiro.</p>
+    <div class="copy">
+      <figure>
+        <blockquote lang="en">“In Brazil, we call them carolinas: little bites made for passing around the table.”</blockquote>
+        <figcaption>Carolinas de Doce de Leite. O nome original vem primeiro e é explicado dentro da frase, sem glossário.</figcaption>
+      </figure>
+      <figure>
+        <blockquote lang="en">“A little Brazilian bakery nostalgia for those who know it, and an easy favourite for those discovering calabresa for the first time.”</blockquote>
+        <figcaption>Esfirra de Calabresa. A mesma frase serve aos dois públicos. Copy final de produtos, setembro de 2026.</figcaption>
+      </figure>
+    </div>
+
+    <h4>Decisão 4: automatizar a repetição e deixar a decisão com uma pessoa</h4>
+    <p class="read">Lendo as conversas reais, quase toda mensagem cabia em cinco tipos de pessoa. O sistema de atendimento foi desenhado a partir delas, no WhatsApp Business gratuito que a Padoca já usava, com um menu de no máximo seis opções.</p>
+
+    <figure class="artifact">
+      <p class="label">Quem escreve para a Padoca e quem responde</p>
+      <p class="sub">Do sistema de WhatsApp, versão 1, agosto de 2026.</p>
+      <div class="scroll" tabindex="0" role="region" aria-label="Tipos de pessoa no atendimento">
+        <table class="who">
+          <thead><tr><th scope="col">Quem escreve</th><th scope="col">O que quer</th><th scope="col">Quem responde</th></tr></thead>
+          <tbody>
+            <tr><td>Quero comprar</td><td>Já conhece a Padoca e quer pedir rápido</td><td><span class="tag">Automático</span></td></tr>
+            <tr><td>Quero conhecer</td><td>Onde fica, o que vende</td><td><span class="tag">Automático</span></td></tr>
+            <tr><td>Quero encomendar</td><td>Bolo ou doce para uma ocasião</td><td><span class="tag">Automático</span> coleta os dados, <span class="tag h">Atendimento humano</span> define preço e prazo</td></tr>
+            <tr><td>Quero catering</td><td>Evento, empresa, grupo grande</td><td><span class="tag h">Atendimento humano</span></td></tr>
+            <tr><td>Tive um problema</td><td>Atraso, pedido errado, reclamação</td><td><span class="tag h">Atendimento humano</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </figure>
+
+    <div class="split">
+      <div>
+        <h5>Fica automático</h5>
+        <ul>
+          <li>Horário, endereço, cardápio, link do site</li>
+          <li>Como pedir e como funciona a retirada</li>
+          <li>Formas de pagamento e perguntas frequentes</li>
+          <li>O início de uma encomenda ou de um catering</li>
+        </ul>
+      </div>
+      <div class="human">
+        <h5>Fica com uma pessoa</h5>
+        <ul>
+          <li>Orçamento e qualquer coisa fora do normal</li>
+          <li>Disponibilidade do dia, que depende da cozinha</li>
+          <li>Alteração, cancelamento e reembolso</li>
+          <li>Reclamação: a mensagem automática acolhe, uma pessoa resolve</li>
+        </ul>
+      </div>
+    </div>
+    <p class="note" style="margin-top:.75rem">Regra de ouro do documento: se tem dinheiro envolvido, se é diferente do normal, se depende da cozinha ou se é uma promessa, quem responde é sempre uma pessoa.</p>
+
+    <figure class="artifact">
+      <p class="label">Mapa de stakeholders da Padoca</p>
+      <p class="sub">Reconstruído para o portfólio a partir do diagnóstico e da operação.</p>
+      <div class="rings">
+        <h5>Plataformas e parceiros</h5>
+        <ul><li>Shopify (site e pedidos online)</li><li>Square (venda na loja)</li><li>WhatsApp Business e Instagram</li><li>Consultoria Kura &amp; Co e SÈVE Studio</li><li>Parceiros de eventos, como a turnê de João Gomes na Austrália</li></ul>
+        <div class="ring">
+          <h5>Quem opera o serviço</h5>
+          <ul><li>O dono, que produz, atende e decide</li><li>Futura assistente de cozinha, para quem os procedimentos foram escritos</li></ul>
+          <div class="ring core">
+            <h5>Quem compra</h5>
+            <ul><li>Brasileiros que procuram um sabor de casa</li><li>Moradores locais descobrindo a confeitaria brasileira</li><li>Clientes de encomendas para festas e eventos</li><li>Cafés e negócios que compram no atacado ou revendem</li></ul>
+          </div>
+        </div>
+      </div>
+    </figure>
+
+    <figure class="artifact">
+      <p class="label">Service blueprint de uma encomenda de bolo</p>
+      <p class="sub">Reconstruído para o portfólio a partir do sistema de WhatsApp, da rotina de produção e das regras de retirada. Role a tabela para o lado.</p>
+      <div class="scroll" tabindex="0" role="region" aria-label="Blueprint da encomenda, role para o lado">
+        <table class="bp">
+          <thead><tr><th scope="col"><span class="note">Etapa</span></th><th scope="col">Descobre</th><th scope="col">Pede</th><th scope="col">Recebe orçamento</th><th scope="col">Confirma</th><th scope="col">Produção</th><th scope="col">Retira</th><th scope="col">Depois</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Evidência física</th><td>Site, Instagram, avaliações</td><td>Menu de até seis opções no WhatsApp</td><td>Mensagem com valor e prazo</td><td>Confirmação do pedido</td><td>Nenhuma: acontece fora da vista</td><td>Endereço e horário de retirada</td><td>Avaliação e fotos de clientes</td></tr>
+            <tr class="line"><th scope="row">Ação da pessoa</th><td>Procura um bolo para uma ocasião</td><td>Escolhe “Encomendas” e responde às perguntas</td><td>Avalia a proposta</td><td>Fecha o pedido</td><td>Aguarda</td><td>Busca no horário combinado, ou manda alguém</td><td>Comenta, indica, volta</td></tr>
+            <tr class="vis"><th scope="row">Linha de frente</th><td>Copy bilíngue e página de encomendas</td><td>Mensagem automática coleta data, pessoas, produtos, ocasião, restrições e prazo</td><td>Atendimento humano define preço e prazo</td><td>Resposta rápida padronizada</td><td></td><td>Entrega do pedido na loja</td><td>Agradecimento</td></tr>
+            <tr><th scope="row">Bastidores</th><td></td><td>Etiqueta de conversa “Encomenda”</td><td>Checagem da agenda da cozinha</td><td>Pedido entra na rotina semanal</td><td>Produção conforme os procedimentos</td><td>Separação e embalagem</td><td>Perguntas repetidas viram novas respostas prontas</td></tr>
+            <tr><th scope="row">Suporte</th><td colspan="2">Shopify, WhatsApp Business</td><td colspan="3">Rotina de produção, procedimentos da cozinha, prazo mínimo de encomenda</td><td colspan="2">Cinco indicadores de atendimento</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="legend"><span class="l1">linha de interação</span><span class="l2">linha de visibilidade</span></p>
+    </figure>
+
+    <h4>Decisão 5: arrumar o bastidor para a frente funcionar</h4>
+    <p class="read">Nada disso se sustenta se a cozinha não tem rotina. Em paralelo ao site e ao WhatsApp, desenhamos uma rotina semanal de produção com semanas com e sem entrega de atacado, procedimentos operacionais para a futura assistente de cozinha, e cinco jeitos de vender com uma única regra de preço cada. O desconto só aparece quando o cliente oferece algo em troca: pedidos recorrentes, ou recorrência mais divulgação da marca. Os contratos de atacado e revenda saíram em português e inglês.</p>
+    <p class="read">Fora do digital, a Padoca também levou a marca para o camarim da turnê de João Gomes na Austrália, uma ação patrocinada, sem venda ao público.</p>
+
+    <div class="numbers">
+      <div><b>9</b><span>etapas na nova página inicial, cada uma com uma função</span></div>
+      <div><b>5</b><span>tipos de pessoa no atendimento, base do menu do WhatsApp</span></div>
+      <div><b>5</b><span>jeitos de vender, cada um com uma regra de preço</span></div>
+      <div><b>5</b><span>números para acompanhar o WhatsApp no início</span></div>
+    </div>
+
+    <div class="next">
+      <h4>Como saber se está funcionando</h4>
+      <p>Definimos cinco números antes de ligar qualquer automação: quantas conversas chegam, quantas se resolvem sem o Pedro, quantas viram pedido, quantas são encomenda ou catering, e quais perguntas se repetem e ainda não estão nas respostas prontas. A última é a mais importante, porque cada pergunta repetida é a pista da próxima versão.</p>
+    </div>
+      </div>
+    </details>
+  </div>
+</article>
+
+<!-- CASE 4 -->
+<article class="case" id="caso-prosas" aria-labelledby="t-prosas">
+  <div class="wrap">
+    <div class="case-head">
+      <div>
+        <p class="when">2026</p>
+        <h2 id="t-prosas">Prosas: públicos diferentes, uma marca</h2>
+        <p class="read">A Prosas é uma empresa de tecnologia com soluções para editais, processos seletivos e investimento social. Quem usa está dos dois lados: empresas e governos que financiam, organizações e proponentes que buscam recurso. Cada um chega com um problema diferente, e a marca precisa fazer sentido para todos.</p>
+      </div>
+      <dl class="facts">
+        <div><dt>Meu papel</dt><dd>Coordenadora de Marketing, com um time direto de duas pessoas</dd></div>
+        <div><dt>Ferramentas</dt><dd>RD Station, Asana, Notion</dd></div>
+        <div><dt>Links</dt><dd><a href="https://prosas.com.br">prosas.com.br</a></dd></div>
+        <div><dt>Métodos e frameworks</dt><dd><ul class="mtags"><li>Segmentação por público</li><li>Jornadas de relacionamento</li><li>Posicionamento digital</li><li>Mapa de capacidade do time</li></ul></dd></div>
+      </dl>
+    </div>
+    <details class="more">
+      <summary><span class="open-t">Ver o caso completo</span><span class="close-t">Recolher o caso</span></summary>
+      <div class="more-body">
+    <div class="cols">
+      <div>
+        <h4>Posicionamento digital</h4>
+        <p>Cuido de como a Prosas se apresenta nos canais digitais. Os materiais comerciais passaram a começar pelo problema de cada público (cultura, assistência social, empresas, governo), com o catálogo de soluções logo depois.</p>
+        <h4>Relacionamento com clientes</h4>
+        <p>Jornadas de relacionamento por e-mail segmentadas por público e atendimento aos clientes no que envolve comunicação e marketing.</p>
+      </div>
+      <div>
+        <h4>Divulgação de projetos de clientes</h4>
+        <p>Coordeno a divulgação de projetos e campanhas de clientes como Banco BV e Globo, e a comunicação do Programa de Formação em Gestão de Políticas Públicas para a Cultura, com patrocínio do Itaú e parceria do IBDCult.</p>
+        <h4>Bastidor</h4>
+        <p>Para o público interno, lancei a intranet e uma newsletter mensal. Também mapeei a capacidade do time para a diretoria, mostrando onde as entregas dependiam de uma única pessoa.</p>
+      </div>
+    </div>
+      </div>
+    </details>
+  </div>
+</article>
+</main>
+
+<section class="contact" id="contato" aria-labelledby="t-contato">
+  <div class="wrap">
+    <h2 id="t-contato">Vamos conversar</h2>
+    <p class="read">Moro em São Paulo e trabalho remoto.</p>
+    <p><a href="mailto:valeria.reis12@gmail.com">valeria.reis12@gmail.com</a></p>
+    <p><a href="https://www.linkedin.com/in/valeriareis">linkedin.com/in/valeriareis</a></p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">Valéria Reis, 2026. Os artefatos marcados como reconstruídos foram montados para este portfólio a partir dos documentos originais de cada projeto.</div>
+</footer>
+
+<script>
+(function(){
+  var btn=document.getElementById('textsize');
+  var root=document.documentElement;
+  try{ if(localStorage.getItem('vr-big')==='1'){root.classList.add('big');btn.setAttribute('aria-pressed','true');} }catch(e){}
+  btn.addEventListener('click',function(){
+    var on=root.classList.toggle('big');
+    btn.setAttribute('aria-pressed',on?'true':'false');
+    try{ localStorage.setItem('vr-big',on?'1':'0'); }catch(e){}
+  });
+})();
+</script>
+<script>
+(function(){
+  function openFor(hash){
+    if(!hash) return;
+    var el=document.querySelector(hash);
+    if(!el) return;
+    var d=el.matches('details.more')?el:(el.closest('article.case')||el).querySelector('details.more');
+    var inside=el.closest('details.more');
+    if(inside) inside.open=true; else if(d && el.matches('article.case')) d.open=true;
+  }
+  document.addEventListener('click',function(e){
+    var a=e.target.closest('a[href^="#caso-"]');
+    if(a){ openFor(a.getAttribute('href')); }
+  });
+  window.addEventListener('hashchange',function(){openFor(location.hash);});
+  openFor(location.hash);
+  window.addEventListener('beforeprint',function(){document.querySelectorAll('details.more').forEach(function(d){d.open=true;});});
+})();
+</script>
+<script>
+(function(){
+  var D={"Sobre": "About", "Experiências": "Experiences", "Em ordem cronológica, do agora pra trás": "In chronological order, from the present backwards", "Experiências e influências": "Experiences and influences", "O jeito como eu desenho serviços não veio de um manual. Veio de lugares concretos — do mais recente ao mais antigo.": "The way I design services did not come from a manual. It came from concrete places — from the most recent to the oldest.", "Pesquisa com reconhecimento internacional": "Research with international recognition", "Selecionada para o ciclo 5 da bolsa internacional de pesquisa em história do fotolivro. Meu tema:": "Selected for cycle 5 of the international research grant in photobook history. My theme:", "os fotolivros como atos de permanência — um mapeamento da história da autodocumentação negra no Brasil.": "photobooks as acts of permanence — a mapping of the history of Black self-documentation in Brazil.", "Ler sobre a minha pesquisa no 10x10 ↗": "Read about my research at 10x10 ↗", "Capa: Atos de permanência — bolsa internacional 10x10 Photobooks, 2026–2027": "Cover: Acts of permanence — 10x10 Photobooks international grant, 2026–2027", "Experiência de marca ao vivo": "Live brand experience", "Como freelancer pela Kura & Co, construí a experiência de marca": "As a freelancer with Kura & Co, I built the brand experience", "para o cantor e sua equipe durante a turnê na Austrália, unindo música, hospitalidade e cultura brasileira.": "for the singer and his team during the Australia tour, bringing together music, hospitality and Brazilian culture.", "Capa: Raízes do Brasil — experiência de marca Padoca x João Gomes": "Cover: Raízes do Brasil — Padoca x João Gomes brand experience", "Mídia em escala, bastidor orquestrado": "Media at scale, backstage orchestrated", "Pacotes de mídia": "Media packages", "Pacotes de mídia para anunciantes como Mercado Livre e Magalu, relacionamento direto com agências e datas especiais como a Black Friday.": "Media packages for advertisers such as Mercado Livre and Magalu, direct relationships with agencies and special dates like Black Friday.", "Eu definia o que entrava em cada pacote, os preços contra as metas e as cotas.": "I defined what went into each package, the prices against targets, and the day-by-day quotas.", "Capa: Black Friday — pacotes de mídia, 2024": "Cover: Black Friday — media packages, 2024", "Fotografia e editorial próprio": "Photography and my own editorial work", "Um anuário inteiro operado com 14 voluntários: cerca de 600 inscritos em 3 edições, um fotolivro por edição, distribuído no Museu das Favelas e em escolas.": "A full yearbook run with 14 volunteers: around 600 applicants across 3 editions, one photobook per edition, distributed at the Museu das Favelas and in schools.", "Curadoria, produção e lançamento com o meu nome.": "Curation, production and launch under my own name.", "Capa: (se)mentes — editorial próprio": "Cover: (se)mentes — own editorial work", "Escuta com método": "Listening with method", "Grupos focais e o primeiro censo da empresa viraram o framework dos": "Focus groups and the company's first census became the", "3 E’s — entrar, estar, evoluir": "3 E's — enter, be, evolve", ", que organiza a jornada inteira do colaborador em três momentos, com responsáveis por cada etapa.": "framework, which organizes the entire employee journey in three moments, with owners for each stage.", "O balcão da loja da família": "The counter of the family store", "Atendimento, crédito, estoque e as primeiras redes de uma loja de materiais de construção com mais de 30 anos.": "Customer service, credit, inventory and the first social channels of a construction-supply store over 30 years old.", "Fiz experiência do cliente antes de saber que isso tinha nome.": "I practiced customer experience before I knew it had a name.", "Da publicidade ao design de serviço": "From advertising to service design", "Comunicação Social na ESPM e a transição para UX e design de serviço na Tera, como bolsista. A base de comunicação é o que me faz desenhar serviço pensando em narrativa, não só em fluxo.": "Social Communication at ESPM and the transition to UX and service design at Tera, as a scholarship student. My communication background is what makes me design services thinking about narrative, not just flow.", "Palco e facilitação": "Stage and facilitation", "Marias do Bar 2014 · Formações 2022–2024": "Marias do Bar 2014 · Training programs 2022–2024", "Do curso de coquetelaria para 15 mulheres na Bacardi às formações sobre carreira e cultura para": "From a bartending course for 15 women at Bacardi to career and culture training programs for", "mais de 3.000 profissionais": "over 3,000 professionals", "em empresas como PwC, Itaú e Volkswagen — cada uma desenhada do briefing à facilitação.": "at companies like PwC, Itaú and Volkswagen — each one designed from briefing to facilitation.", "É desses lugares que sai o método —": "It is from these places that the method comes —", "pesquisa, síntese, desenho e entrega": "research, synthesis, design and delivery", "— aplicado em cada caso abaixo.": "— applied in each case below.", "Meu LinkedIn:": "My LinkedIn:", "Ferramentas de trabalho": "Work tools", "Gestão de projetos": "Project management", "Comunicação e canais": "Communication and channels", "Dados, pesquisa e operação": "Data, research and operations", "Marketing e automação": "Marketing and automation", "IA no dia a dia": "AI in everyday work", "Pular para o conteúdo": "Skip to content", "Seções": "Sections", "Como eu trabalho": "How I work", "Ferramentas": "Toolkit", "Percurso": "Path", "Casos": "Cases", "Contato": "Contact", "Texto maior": "Larger text", "Transformo ideias em experiências que fazem sentido para quem usa": "I turn ideas into experiences that make sense to the people who use them", "Sou designer de serviços. Penso na experiência das pessoas desde antes de saber que isso tinha nome, no balcão da loja da minha família e nos eventos que produzi ainda na faculdade. Aprendi a trabalhar com método em empresas de tecnologia, numa fintech e numa big tech. Na Zup (Grupo Itaú), esse olhar ganhou o cargo de Designer de Serviços. Também fundei uma plataforma editorial, hoje trabalho com SaaS e atendo clientes internacionais como freelancer pela Kura & Co.": "I am a service designer. I was thinking about people’s experience long before I knew it had a name, at the counter of my family’s store and at the events I produced while still in college. I learned to work with method at technology companies, a fintech and a big tech. At Zup (Itaú Group), that way of seeing became my job title: Service Designer. I also founded an editorial platform, I currently work in SaaS, and I serve international clients as a freelancer with Kura & Co.", "Também sou pesquisadora independente. Em 2026 fui selecionada para o": "I am also an independent researcher. In 2026 I was selected for the", ", bolsa internacional de pesquisa. Levo o mesmo rigor para o design de serviços: ouvir, levantar evidência e organizar o que encontrei antes de propor qualquer coisa.": ", an international research grant. I bring the same rigor to service design: listen, gather evidence and organize what I found before proposing anything.", "Retrato de Valéria Reis": "Portrait of Valéria Reis", "Foto: Aline Costa.": "Photo: Aline Costa.", "Uso o duplo diamante (descobrir, definir, desenvolver, entregar) como base e adapto ao tamanho de cada problema. Cada caso mostra o que fiz em cada etapa. Abaixo, os hábitos que se repetem em todos eles, com o lugar onde cada um ficou registrado.": "I use the double diamond (discover, define, develop, deliver) as a base and adapt it to the size of each problem. Each case shows what I did at each stage. Below are the habits that repeat across all of them, with where each one is documented.", "Escuto quem usa e quem opera": "I listen to those who use and those who operate", "Pesquisa com o público e com quem sustenta o serviço por dentro. As duas visões quase nunca coincidem.": "Research with the audience and with the people who run the service from the inside. The two views rarely match.", "Onde:": "Where:", "pesquisa independente com a bolsa 10x10 Photobooks; censo com toda a Zup em 2020; relatos de produção, conversas de WhatsApp e dados do Shopify na Padoca; mais de 600 inscrições lidas na (se)mentes.": "independent research through the 10x10 Photobooks grant; a census of all of Zup in 2020; production notes, WhatsApp conversations and Shopify data at Padoca; more than 600 applications read at (se)mentes.", "Mapeio as jornadas": "I map the journeys", "Cada público chega ao serviço por um caminho e com uma necessidade. Mapeio essas jornadas lado a lado, junto com o que precisa acontecer nos bastidores para cada uma funcionar.": "Each audience reaches the service by its own path and with its own need. I map those journeys side by side, together with what has to happen backstage for each one to work.", "no site da Padoca, além de quem compra para consumo, consideramos quem encomenda para festas e eventos e os negócios que compram no atacado e na revenda (B2B).": "on Padoca’s website, beyond people buying for themselves, we considered people ordering for parties and events and businesses buying wholesale or for resale (B2B).", "Separo repetição de decisão": "I separate repetition from decision", "O que se repete pode ser automático. O que envolve dinheiro, exceção ou promessa fica com uma pessoa.": "What repeats can be automated. Anything involving money, exceptions or promises stays with a person.", "sistema de atendimento da Padoca, resumido na regra “automatizar repetição, humanizar decisão”.": "Padoca’s customer service system, summed up in the rule “automate repetition, humanize decisions”.", "Decido com dado confirmado": "I decide with confirmed data", "O que ainda não foi confirmado fica marcado no documento, e os indicadores de acompanhamento são escolhidos antes de lançar, não depois.": "Anything not yet confirmed is flagged in the document, and tracking metrics are chosen before launch, not after.", "as planilhas de operação da Padoca marcam com ★ todo número ainda não confirmado; o WhatsApp saiu com cinco números definidos; na Zup, eNPS e turnover acompanhados no período.": "Padoca’s operations spreadsheets flag every unconfirmed number with ★; WhatsApp launched with five defined metrics; at Zup, eNPS and turnover were tracked over the period.", "Ferramentas de design de serviço": "Service design toolkit", "Métodos e frameworks que uso, com o tempo de prática em cada um.": "Methods and frameworks I use, with how long I have practiced each one.", "Pesquisa": "Research", "Pesquisa qualitativa": "Qualitative research", "(grupos focais, entrevistas, análise de conversas reais)": "(focus groups, interviews, analysis of real conversations)", "desde 2020": "since 2020", "Pesquisa quantitativa": "Quantitative research", "(censo, pesquisas de engajamento)": "(census, engagement surveys)", "de 2020 a 2023": "2020 to 2023", "Diagnóstico e benchmarking": "Diagnosis and benchmarking", "desde 2012": "since 2012", "Análise operacional": "Operational analysis", "(bastidor, produção, canais)": "(backstage, production, channels)", "desde 2017": "since 2017", "Síntese": "Synthesis", "Personas e arquétipos de usuário": "Personas and user archetypes", "Framework próprio: 3 E’s": "My own framework: the 3 E’s", "(entrar, estar, evoluir)": "(enter, stay, evolve)", "criado em 2020": "created in 2020", "Mapa de estado atual e futuro": "Current and future state map", "desde 2026": "since 2026", "Princípios de experiência": "Experience principles", "Desenho": "Design", "Mapa de jornada": "Journey map", "desde 2021": "since 2021", "Responsáveis por etapa e mapa de stakeholders": "Owners per stage and stakeholder map", "Arquitetura da experiência": "Experience architecture", "(páginas, fluxos de conversa)": "(pages, conversation flows)", "Segmentação por público": "Audience segmentation", "Entrega": "Delivery", "Facilitação de oficinas e capacitação": "Workshop facilitation and training", "(mais de 3.000 profissionais)": "(more than 3,000 professionals)", "desde 2014": "since 2014", "Desenho e operação de programas": "Program design and operations", "Indicadores definidos antes do lançamento": "Metrics defined before launch", "Procedimentos operacionais e rotinas": "Operating procedures and routines", "Roadmap em fases": "Phased roadmap", "Em ordem cronológica, com a leitura de design de serviço de cada passagem. As linhas destacadas viraram estudo de caso completo.": "In chronological order, with a service design reading of each step. Highlighted rows became full case studies.", "Estagiária de marketing e líder do projeto Marias do Bar": "Marketing intern and lead of the Marias do Bar project", "Leitura de serviço:": "Service reading:", "desenhei com o time de estagiários um curso profissionalizante de coquetelaria para 15 mulheres, da seleção à formação. Foi meu primeiro programa pensado para quem ainda não tinha porta de entrada num mercado.": "together with the intern team, I designed a professional bartending course for 15 women, from selection to training. It was my first program built for people who did not yet have a way into a market.", "Novos Baianos, negócio da família": "Novos Baianos, the family business", "Operação, atendimento, crédito e presença digital de uma loja de materiais de construção com mais de 30 anos": "Operations, customer service, store credit and digital presence for a building materials store with more than 30 years of history", "fiz experiência do cliente antes de saber o nome. Atendimento no balcão, crédito na loja, estoque e as primeiras páginas da loja no Instagram, Facebook e Google, que passaram de 50 mil visualizações de fotos de produtos.": "I was doing customer experience before I knew the name. Counter service, in-store credit, inventory and the store’s first pages on Instagram, Facebook and Google, which passed 50,000 views of product photos.", "Zup (Grupo Itaú)": "Zup (Itaú Group)", "Designer de Serviços em Employee Experience, depois Analista": "Service Designer in Employee Experience, then Analyst", "a empresa como serviço para quem trabalha nela. Mapa da jornada do colaborador organizado em três momentos, entrar, estar e evoluir, com os responsáveis por cada etapa, e o primeiro censo da empresa.": "the company as a service for the people who work there. An employee journey map organized in three moments, enter, stay and evolve, with owners for each stage, and the company’s first census.", "Ver caso: os 3 E’s da jornada na Zup": "See case: the 3 E’s of the journey at Zup", "Analista Sênior, depois Coordenadora de Cultura e Pessoas com foco em experiência do colaborador": "Senior Analyst, then Culture and People Coordinator focused on employee experience", "desenho e operação dos pontos da jornada do colaborador numa fintech em crescimento: atração, onboarding, desenvolvimento, comunidade, escuta e canais de segurança.": "design and operation of the touchpoints of the employee journey at a growing fintech: attraction, onboarding, development, community, listening and safety channels.", "Ver caso: a jornada do colaborador no Will": "See case: the employee journey at Will", "Formações independentes": "Independent training", "Facilitadora de workshops e formações sobre carreira e cultura organizacional": "Facilitator of workshops and training on careers and organizational culture", "mais de 3.000 profissionais em empresas como PwC, Itaú, Volkswagen, Conta Azul e Comerc. Cada formação desenhada do briefing à facilitação, com linguagem, exemplos e dinâmicas ajustados ao público de cada cliente.": "more than 3,000 professionals at companies such as PwC, Itaú, Volkswagen, Conta Azul and Comerc. Each program designed from briefing to facilitation, with language, examples and activities adjusted to each client’s audience.", "2023–hoje": "2023–present", "Idealizadora, direção editorial e curadoria-geral": "Founder, editorial director and chief curator", "um serviço editorial inteiro, da chamada nacional ao lançamento, operado com uma equipe de 14 voluntários.": "an entire editorial service, from the national open call to the launch, run with a team of 14 volunteers.", "Ver caso: blueprint de um anuário": "See case: blueprint of a yearbook", "Content Solutions Planner, num time de seis pessoas": "Content Solutions Planner, in a team of six", "orquestração de bastidor. Projetos de mídia, criadores e ativações físicas para anunciantes como Mercado Livre, 99 e CCXP, coordenando Operações, PSO, Creator Solutions e BPM/CSM. Contrato estendido de 6 para 9 meses.": "backstage orchestration. Media, creator and in-person activation projects for advertisers such as Mercado Livre, 99 and CCXP, coordinating Operations, PSO, Creator Solutions and BPM/CSM. Contract extended from 6 to 9 months.", "Consultoria em parceria com o SÈVE Studio": "Consulting in partnership with SÈVE Studio", "redesenho da experiência do site, sistema de atendimento no WhatsApp, rotina de produção e modelo de venda B2B para uma padaria operada praticamente por uma pessoa.": "redesign of the website experience, a WhatsApp service system, a production routine and a B2B sales model for a bakery run almost entirely by one person.", "Ver caso: site, WhatsApp e cozinha desenhados juntos": "See case: website, WhatsApp and kitchen designed together", "Coordenadora de Marketing": "Marketing Coordinator", "uma empresa de tecnologia com soluções para editais, processos seletivos e investimento social, usada por empresas, governos e organizações do terceiro setor. Cuido do posicionamento digital da marca, do relacionamento com os clientes e da divulgação dos projetos deles.": "a technology company with solutions for open calls, selection processes and social investment, used by companies, governments and nonprofit organizations. I am responsible for the brand’s digital positioning, client relationships and the promotion of clients’ projects.", "Ver nota: públicos diferentes, uma marca": "See note: different audiences, one brand", "Pesquisadora selecionada para o ciclo 5 da bolsa internacional de pesquisa": "Researcher selected for cycle 5 of the international research grant", "pesquisa independente, avaliada e selecionada por uma instituição internacional. É a base de método que sustenta a etapa de escuta em todos os projetos acima.": "independent research, reviewed and selected by an international institution. It is the methodological base behind the listening stage in all the projects above.", "Ver o ciclo da bolsa": "See the grant cycle", "Formação": "Education", "Graduação em Comunicação Social, Publicidade e Propaganda": "Bachelor’s degree in Social Communication, Advertising", "UX Design e Design de Serviço, como bolsista": "UX Design and Service Design, as a scholarship student", "Ler a entrevista na Tera sobre essa transição": "Read the Tera interview about this transition", "MBA em Liderança, Inovação e Gestão 3.0": "MBA in Leadership, Innovation and Management 3.0", "Extensão em Diversidade e Direitos Humanos": "Extension course in Diversity and Human Rights", "Em curso": "In progress", "Pós-graduação em Marketing Digital": "Postgraduate program in Digital Marketing", "Zup: os 3 E’s, um framework para a jornada do colaborador": "Zup: the 3 E’s, a framework for the employee journey", "Uma empresa de tecnologia do Grupo Itaú em crescimento acelerado, contratando sem parar. No time de Employee Experience, tratei a empresa como um serviço cujo usuário é quem trabalha nela. A partir de pesquisa com colaboradores, criei o framework dos 3 E’s, que organiza a jornada inteira em três momentos: entrar, estar e evoluir.": "A fast-growing technology company in the Itaú Group, hiring nonstop. On the Employee Experience team, I treated the company as a service whose users are the people who work there. Based on research with employees, I created the 3 E’s framework, which organizes the whole journey into three moments: enter, stay and evolve.", "Meu papel": "My role", "Designer de Serviços em Employee Experience, promovida a Analista": "Service Designer in Employee Experience, promoted to Analyst", "Artigo em que apresentei os 3 E’s (Medium, 2021)": "Article where I introduced the 3 E’s (Medium, 2021)", "Blog da Zup sobre o trabalho da área": "Zup blog post about the team’s work", "Métodos e frameworks": "Methods and frameworks", "Grupos focais": "Focus groups", "Entrevistas qualitativas": "Qualitative interviews", "Censo (pesquisa quantitativa)": "Census (quantitative research)", "Framework 3 E’s": "3 E’s framework", "Responsáveis por etapa": "Owners per stage", "Etapas do método neste caso": "Method stages in this case", "Descobrir": "Discover", "Grupos focais e entrevistas com colaboradores": "Focus groups and interviews with employees", "Primeiro censo da empresa": "The company’s first census", "Definir": "Define", "Síntese das dores em três momentos": "Pain points synthesized into three moments", "Framework 3 E’s e personas": "3 E’s framework and personas", "Desenvolver": "Develop", "Mapa da jornada com pontos de contato": "Journey map with touchpoints", "Responsáveis de bastidor por etapa": "Backstage owners per stage", "Proposta de onboarding em trilhas": "Proposal for onboarding tracks", "Entregar": "Deliver", "Ações de cultura, comunicação interna e marca empregadora": "Culture, internal communication and employer brand initiatives", "eNPS e turnover acompanhados": "eNPS and turnover tracked", "Ver o caso completo": "See the full case", "Recolher o caso": "Collapse the case", "O framework": "The framework", "Entrar": "Enter", "reúne atração, seleção e onboarding: da primeira campanha que a pessoa vê até o primeiro contato com a liderança e com o time.": "covers attraction, selection and onboarding: from the first campaign a person sees to their first contact with leadership and the team.", "Estar": "Stay", "cobre o dia a dia: estrutura, benefícios, saúde, bem-estar e cultura.": "covers day-to-day life: infrastructure, benefits, health, well-being and culture.", "Evoluir": "Evolve", "trata de treinamento, carreira, reconhecimento e promoções.": "covers training, career, recognition and promotions.", "A jornada fecha com o desligamento, que também foi mapeado. Cada momento ganhou seus pontos de contato e as áreas responsáveis por eles nos bastidores.": "The journey closes with offboarding, which was also mapped. Each moment got its touchpoints and the teams responsible for them backstage.", "Escuta": "Listening", "Conduzi grupos focais e entrevistas qualitativas com colaboradores de perfis e trajetórias diferentes, para entender as principais dores de cada um ao longo da jornada. Em setembro de 2020, conduzi também o primeiro censo da Zup, um levantamento de perfil e de pertencimento de toda a empresa.": "I ran focus groups and qualitative interviews with employees from different profiles and backgrounds to understand each one’s main pain points along the journey. In September 2020, I also ran Zup’s first census, a survey of the profile and sense of belonging across the whole company.", "O achado central: mesmo com contextos diferentes, as dores se concentravam nos mesmos três momentos. Foi daí que nasceram os 3 E’s.": "The key finding: even with different contexts, the pain points clustered in the same three moments. That is where the 3 E’s came from.", "Personas diferentes podem ter pontos de atrito diferentes na jornada.": "Different personas can have different friction points along the journey.", "Princípio escrito no próprio mapa da jornada, 2021": "Principle written on the journey map itself, 2021", "Estratégias diferentes, o mesmo objetivo": "Different strategies, same goal", "A consequência prática do framework: quando os usuários têm necessidades diferentes, alguns processos não podem ser iguais para todos. O onboarding, por exemplo, foi proposto como trilhas que se adaptam a cada persona, todas chegando ao mesmo resultado: uma boa experiência de chegada. Os pontos críticos de cada momento viraram ações de cultura, comunicação interna e marca empregadora.": "The practical consequence of the framework: when users have different needs, some processes cannot be the same for everyone. Onboarding, for example, was proposed as tracks that adapt to each persona, all reaching the same result: a good arrival experience. The critical points of each moment became culture, internal communication and employer brand initiatives.", "Imagem de capa do artigo sobre os 3 E’s publicado no Medium": "Cover image of the Medium article about the 3 E’s", "Capa do artigo original em que publiquei o framework, em janeiro de 2021.": "Cover of the original article where I published the framework, January 2021.", "Mapa da jornada do colaborador na Zup, organizado nos 3 E’s": "Employee journey map at Zup, organized by the 3 E’s", "Do mapa original de 2021, com os pontos de contato e as áreas responsáveis em cada etapa. Role a tabela para o lado.": "From the original 2021 map, with touchpoints and responsible teams at each stage. Scroll the table sideways.", "Jornada da Zup nos 3 E's, role para o lado": "Zup journey in the 3 E's, scroll sideways", "Entrar na Zup": "Enter Zup", "Estar na Zup": "Stay at Zup", "Evoluir na Zup": "Evolve at Zup", "Sair": "Leave", "Etapa": "Stage", "Atração e seleção": "Attraction and selection", "Estrutura e bem-estar": "Infrastructure and well-being", "Treinamento e desenvolvimento": "Training and development", "Desligamento": "Offboarding", "Pontos de contato": "Touchpoints", "Campanhas e relacionamento": "Campaigns and relationship", "Candidatura e testes": "Application and tests", "Entrevistas e proposta": "Interviews and offer", "Devolutivas, inclusive as negativas": "Feedback to candidates, including rejections", "Admissão, documentos e exame": "Hiring paperwork and medical exam", "Kit e equipamentos": "Welcome kit and equipment", "Orientações iniciais e apresentação do negócio": "Initial orientation and business overview", "Chegada à área, contato com liderança e pares": "Arrival at the team, contact with leadership and peers", "Remuneração e benefícios": "Compensation and benefits", "Saúde, segurança e licenças": "Health, safety and leave", "Controle de jornada": "Time tracking", "Ações de cultura e datas importantes": "Culture initiatives and key dates", "Treinamentos iniciais e academia interna": "Initial training and internal academy", "Gestão de performance e 1:1": "Performance management and 1:1s", "Carreira e oportunidades": "Career and opportunities", "Reconhecimento e promoções": "Recognition and promotions", "Desligamento voluntário": "Voluntary departure", "Desligamento involuntário": "Involuntary departure", "Aposentadoria": "Retirement", "Quem responde nos bastidores": "Who responds backstage", "Talent, marketing e employer branding": "Talent, marketing and employer branding", "Departamento pessoal, Employee Experience, liderança, TI interna, facilities": "HR operations, Employee Experience, leadership, internal IT, facilities", "Departamento pessoal, saúde e segurança, BPs, Employee Experience": "HR operations, health and safety, BPs, Employee Experience", "Liderança, educação corporativa, BPs": "Leadership, corporate education, BPs", "BPs, departamento pessoal, liderança": "BPs, HR operations, leadership", "entrar, estar e evoluir, como estrutura da jornada": "enter, stay and evolve as the structure of the journey", "1º": "1st", "censo da Zup, base da estratégia da área": "Zup census, the base of the team’s strategy", "alta registrada no período, com queda do turnover": "increase recorded over the period, with lower turnover", "time reconhecido pela Endeavor, categoria scale-up": "team recognized by Endeavor, scale-up category", "Indicadores e reconhecimento são resultado de equipe. Em menos de um ano fui promovida de Designer de Serviços a Analista.": "Metrics and recognition are team results. In less than a year I was promoted from Service Designer to Analyst.", "O que levei daqui": "What I took from here", "O mapa mostrava que o atrito era diferente para cada perfil de pessoa. O censo mostrava quem estava na empresa. Desde então, jornada e pesquisa andam juntas no meu trabalho: na Padoca, foram as conversas reais do WhatsApp que definiram os tipos de pessoa do atendimento.": "The map showed that friction was different for each kind of person. The census showed who was in the company. Since then, journey and research go together in my work: at Padoca, real WhatsApp conversations defined the customer types for the service system.", "Will Bank: a jornada do colaborador numa fintech em crescimento": "Will Bank: the employee journey at a growing fintech", "No Will, a pergunta saiu do mapa e foi para a operação: o que a pessoa encontra em cada momento da jornada, e quem garante que isso aconteça mesmo com a empresa mudando toda semana.": "At Will, the question moved from the map to operations: what a person finds at each moment of the journey, and who makes sure it happens even as the company changes every week.", "Analista Sênior, depois Coordenadora de Cultura e Pessoas com foco em experiência do colaborador, com 5 pessoas no time": "Senior Analyst, then Culture and People Coordinator focused on employee experience, with a team of 5", "Pesquisa de engajamento": "Engagement surveys", "Desenho de programas": "Program design", "Capacitação de lideranças": "Leadership training", "Indicadores para liderança": "Metrics for leadership", "Pesquisas de engajamento e cultura": "Engagement and culture surveys", "Planos de ação a partir das pesquisas": "Action plans based on the surveys", "Prioridades por momento da jornada": "Priorities by journey moment", "Onboarding, mentorias e bootcamps": "Onboarding, mentoring and bootcamps", "Service blueprint do canal de denúncia": "Service blueprint of the whistleblower channel", "Comitê e código de ética": "Committee and code of ethics", "Operação com time de 5 pessoas": "Operations with a team of 5", "Treinamentos para lideranças": "Training for leaders", "Indicadores reportados à liderança": "Metrics reported to leadership", "Jornada do colaborador no Will, com o que desenhei e operei em cada momento": "Employee journey at Will, with what I designed and ran at each moment", "Leitura retrospectiva, montada para o portfólio a partir do escopo da área. Role para o lado.": "Retrospective reading, put together for this portfolio from the team’s scope. Scroll sideways.", "Jornada do colaborador no Will, role para o lado": "Employee journey at Will, scroll sideways", "Ser atraída": "Be attracted", "Como a empresa aparece para quem pensa em trabalhar nela.": "How the company shows up for people considering working there.", "Eventos, patrocínios, podcasts e aproximação de comunidades": "Events, sponsorships, podcasts and outreach to communities", "Chegar": "Arrive", "O que a pessoa encontra nos primeiros dias.": "What a person finds in the first days.", "Programa de onboarding": "Onboarding program", "Crescer": "Grow", "Caminhos de aprendizado e acompanhamento.": "Learning paths and follow-up.", "Mentorias, bootcamps, PDI e ciclos de performance": "Mentoring, bootcamps, development plans and performance cycles", "Pertencer": "Belong", "Onde encontrar pares e ter voz.": "Where to find peers and have a voice.", "Comunidade interna com mais de 100 pessoas e comitê": "Internal community of more than 100 people and a committee", "Ser ouvida": "Be heard", "Pesquisa que vira plano de ação.": "Research that becomes an action plan.", "Estar segura": "Feel safe", "Para onde levar um problema sério.": "Where to take a serious problem.", "Canal de denúncia e código de ética atualizado": "Whistleblower channel and updated code of ethics", "Escuta que vira decisão": "Listening that becomes decisions", "As pesquisas de engajamento e cultura viraram planos de ação, com indicadores levados à liderança.": "Engagement and culture surveys became action plans, with metrics brought to leadership.", "Capacitação das lideranças": "Training leaders", "Treinamentos para equipes e lideranças, para que a experiência desenhada no papel chegasse ao dia a dia de cada time.": "Training for teams and leaders, so the experience designed on paper reached each team’s daily routine.", "Um serviço em que confiar é a condição": "A service where trust is the precondition", "Estruturei o canal de denúncia, o comitê e a atualização do código de ética. Desenhei o fluxo do canal em service blueprint, separando o que a pessoa que denuncia vê do que acontece nos bastidores até a resposta. Num serviço assim, a pessoa só usa se confiar que vai ser ouvida sem se expor.": "I set up the whistleblower channel, the committee and the update of the code of ethics. I designed the channel’s flow as a service blueprint, separating what the person reporting sees from what happens backstage until the response. In a service like this, people only use it if they trust they will be heard without being exposed.", "Gestão do time": "Team management", "Coordenei 5 pessoas, com ciclos de performance, PDI e feedbacks, sustentando os programas na operação.": "I coordinated 5 people, with performance cycles, development plans and feedback, keeping the programs running.", "pessoas no time que coordenei": "people on the team I coordinated", "pessoas na comunidade interna": "people in the internal community", "de mulheres no quadro, resultado para o qual contribuí": "women in the workforce, a result I contributed to", "de pessoas negras no quadro, no mesmo período": "Black employees in the workforce, over the same period", "O blueprint do canal de denúncia deixou claro que, em serviço sensível, o que a pessoa vê enquanto espera pesa tanto quanto a resposta. Levei isso para a Padoca: no atendimento, uma reclamação é acolhida na hora e resolvida por uma pessoa, nunca por mensagem automática.": "The whistleblower channel blueprint made it clear that, in a sensitive service, what people see while they wait matters as much as the answer. I took this to Padoca: in its customer service, a complaint is acknowledged right away and resolved by a person, never by an automated message.", "(se)mentes: o blueprint de um anuário": "(se)mentes: the blueprint of a yearbook", "A (se)mentes documenta trajetórias de profissionais negros no Brasil em anuários impressos e digitais. Por fora, é um livro. Por dentro, é um serviço com chamada nacional, triagem, curadoria, entrevista, retrato, edição, gráfica, evento e circulação, sustentado por voluntários.": "(se)mentes documents the careers of Black professionals in Brazil in printed and digital yearbooks. From the outside, it is a book. Inside, it is a service with a national open call, screening, curation, interviews, portraits, editing, printing, an event and distribution, sustained by volunteers.", "Idealizadora, direção editorial e curadoria-geral; coordeno 14 voluntários de criação, produção, fotografia e atendimento": "Founder, editorial director and chief curator; I coordinate 14 volunteers in creative, production, photography and support", "Edições": "Editions", "Anuário 2023": "2023 Yearbook", "Anuário 2024": "2024 Yearbook", "Anuário 2025": "2025 Yearbook", "Matéria na Alma Preta Jornalismo": "Article in Alma Preta Jornalismo", "LinkedIn da (se)mentes": "(se)mentes on LinkedIn", "Curadoria": "Curation", "Mapa de stakeholders": "Stakeholder map", "Operação com voluntários": "Volunteer operations", "Chamada nacional aberta": "National open call", "Leitura de mais de 600 inscrições": "Reading more than 600 applications", "Critérios de curadoria": "Curation criteria", "Recorte de cada edição": "Scope of each edition", "Service blueprint da operação": "Service blueprint of the operation", "Papéis dos 14 voluntários": "Roles of the 14 volunteers", "Anuário impresso e digital aberto": "Printed yearbook and open-access digital edition", "Lançamento e circulação": "Launch and distribution", "Anuário (se)mentes aberto, mostrando uma página dupla com retrato e texto de uma trajetória": "Open (se)mentes yearbook showing a spread with a portrait and the text of a career story", "Anuário (se)mentes impresso. Foto: Panda Delas.": "Printed (se)mentes yearbook. Photo: Panda Delas.", "O desafio de desenho foi de duas pontas. Para quem se inscreve, contar a própria história para desconhecidos exige confiança, e a resposta precisa chegar com cuidado, seja ela sim ou não. Para quem opera, tudo depende de voluntários com pouco tempo, então cada etapa precisava de um dono e de uma ferramenta simples.": "The design challenge had two ends. For applicants, telling their story to strangers takes trust, and the answer has to arrive with care, whether it is yes or no. For the people running it, everything depends on volunteers with little time, so each stage needed an owner and a simple tool.", "Service blueprint do ciclo de uma edição": "Service blueprint of one edition’s cycle", "Reconstruído para este portfólio a partir da operação real das três edições. Role a tabela para o lado.": "Reconstructed for this portfolio from the real operation of the three editions. Scroll the table sideways.", "Blueprint da (se)mentes, role para o lado": "(se)mentes blueprint, scroll sideways", "Linhas: o que a pessoa toca, o que ela faz, o que a equipe faz à vista, o que acontece nos bastidores e o que sustenta tudo.": "Rows: what the person touches, what they do, what the team does in view, what happens backstage and what supports it all.", "Chamada": "Open call", "Inscrição": "Application", "Entrevista e retrato": "Interview and portrait", "Edição": "Editing", "Lançamento": "Launch", "Circulação": "Distribution", "Evidência física": "Physical evidence", "Posts da chamada nas redes": "Open call posts on social media", "Formulário de inscrição": "Application form", "Mensagem com o resultado": "Message with the result", "Sessão de fotos e conversa": "Photo session and conversation", "Prova do texto": "Text proof", "Evento e o anuário impresso": "Event and the printed yearbook", "Exemplares em instituições e site aberto": "Copies in institutions and open website", "Ação da pessoa": "Person’s action", "Descobre a chamada, muitas vezes por indicação": "Finds the open call, often through a referral", "Conta a própria trajetória": "Tells their own story", "Aguarda": "Waits", "É ouvida e fotografada": "Is listened to and photographed", "Revisa como foi contada": "Reviews how their story was told", "Vai ao lançamento com quem quiser levar": "Attends the launch with whoever they want to bring", "Compartilha, presenteia, é encontrada": "Shares, gives as a gift, is found", "Linha de frente": "Frontstage", "Comunicação no Instagram e LinkedIn": "Communication on Instagram and LinkedIn", "Atendimento a dúvidas pelo WhatsApp": "Answering questions on WhatsApp", "Contato com quem foi selecionado": "Contact with selected applicants", "Equipe de fotografia e entrevista": "Photography and interview team", "Retorno da edição": "Editing feedback", "Equipe de recepção e produção no evento": "Reception and production team at the event", "Divulgação e relação com parceiros": "Promotion and partner relations", "Bastidores": "Backstage", "Definição do recorte da edição": "Defining the edition’s scope", "Organização das inscrições": "Organizing applications", "Leitura e critérios de seleção": "Reading and selection criteria", "Agenda de produção": "Production schedule", "Texto, edição, diagramação, gráfica": "Writing, editing, layout, printing", "Produção do evento": "Event production", "Distribuição dos exemplares": "Distribution of copies", "Suporte": "Support", "14 voluntários com função definida": "14 volunteers with defined roles", "Parcerias e apoios, como Uber, Fundação Theatro Municipal e gráfica parceira": "Partnerships and support, such as Uber, Fundação Theatro Municipal and a partner printer", "Site anuariosementes.com": "anuariosementes.com website", "linha de interação": "line of interaction", "linha de visibilidade": "line of visibility", "Mapa de stakeholders da (se)mentes": "(se)mentes stakeholder map", "Reconstruído para o portfólio. Do centro para fora: quem o serviço existe para atender, quem faz ele acontecer e quem sustenta ou amplia.": "Reconstructed for this portfolio. From the center out: who the service exists for, who makes it happen and who sustains or amplifies it.", "Ecossistema que sustenta e amplia": "Ecosystem that sustains and amplifies", "Empresas e instituições parceiras, como Uber e Fundação Theatro Municipal": "Partner companies and institutions, such as Uber and Fundação Theatro Municipal", "Gráfica parceira": "Partner printer", "Instituições e organizações que recebem os exemplares": "Institutions and organizations that receive copies", "Imprensa, como a Alma Preta Jornalismo": "Press, such as Alma Preta Jornalismo", "Público dos eventos de lançamento": "Launch event audiences", "Quem faz acontecer": "Who makes it happen", "Direção editorial e curadoria": "Editorial direction and curation", "Voluntários de criação, produção, fotografia e atendimento": "Volunteers in creative, production, photography and support", "Para quem o serviço existe": "Who the service exists for", "Profissionais que se inscrevem": "Professionals who apply", "Profissionais selecionados e publicados": "Professionals selected and published", "Quem lê os anuários, impressos ou no site": "Readers of the yearbooks, in print or online", "Decisões de desenho": "Design decisions", "Chamada nacional aberta, para que a seleção não dependesse de quem eu já conhecia. O resultado foram inscrições de 12 estados.": "A national open call, so selection would not depend on who I already knew. The result was applications from 12 states.", "Formato impresso e digital aberto ao mesmo tempo. O mesmo conteúdo chega a uma biblioteca e ao celular de quem nunca entraria numa livraria.": "Print and open-access digital at the same time. The same content reaches a library and the phone of someone who would never walk into a bookstore.", "O que mostra sobre o meu trabalho": "What it shows about my work", "Desenho e opero um serviço de ponta a ponta sem estrutura de empresa: com voluntários, parcerias e ferramentas gratuitas. É o mesmo raciocínio que levo para times pequenos dentro de empresas grandes.": "I design and run an end-to-end service without a company structure: with volunteers, partnerships and free tools. It is the same thinking I bring to small teams inside large companies.", "Edição 2025 do anuário (se)mentes": "2025 edition of the (se)mentes yearbook", "Edição 2025.": "2025 edition.", "Backdrop do evento de lançamento do anuário 2025": "Backdrop of the 2025 yearbook launch event", "Lançamento 2025, Praça das Artes. Foto: acervo pessoal.": "2025 launch, Praça das Artes. Photo: personal archive.", "Evento de lançamento da primeira edição, em 2023": "Launch event of the first edition, 2023", "Lançamento 2023. Foto: Level Group.": "2023 launch. Photo: Level Group.", "edições publicadas, 2023, 2024 e 2025": "editions published, 2023, 2024 and 2025", "inscrições recebidas": "applications received", "trajetórias documentadas em mais de 30 áreas": "career stories documented across more than 30 fields", "estados com presença": "states represented", "pessoas por evento de lançamento": "people per launch event", "A terceira edição foi lançada na Praça das Artes, do Theatro Municipal de São Paulo, em novembro de 2025. O projeto teve cobertura da": "The third edition was launched at Praça das Artes, part of the Theatro Municipal de São Paulo, in November 2025. The project was covered by", "e já distribuiu mais de 400 exemplares impressos para instituições e organizações parceiras.": "and has distributed more than 400 printed copies to institutions and partner organizations.", "Próximo passo": "Next step", "Acompanhar o que muda para quem foi publicado nos meses seguintes ao lançamento. É a etapa do serviço que ainda não está no blueprint, e provavelmente onde está o maior valor.": "Following what changes for the people published in the months after the launch. It is the stage of the service that is not yet in the blueprint, and probably where the greatest value lies.", "Padoca: site, WhatsApp e cozinha desenhados juntos": "Padoca: website, WhatsApp and kitchen designed together", "Uma padaria artesanal brasileira em Brisbane, na Austrália. Vende pelo site (Shopify), na loja (Square), por WhatsApp e Instagram, e para dois clientes fixos de atacado. Quem produz, atende e decide é praticamente uma pessoa só: o Pedro, dono da padaria.": "An artisan Brazilian bakery in Brisbane, Australia. It sells through its website (Shopify), in store (Square), via WhatsApp and Instagram, and to two regular wholesale clients. The person who bakes, serves customers and makes decisions is essentially one person: Pedro, the owner.", "Consultoria pela Kura": "Consulting through Kura", "Co, em parceria com o SÈVE Studio. O diagnóstico do site foi feito em dupla com a Kamilla.": "Co, in partnership with SÈVE Studio. The website diagnosis was done together with Kamilla.", "Shopify, WhatsApp Business, Google Sheets e Docs": "Shopify, WhatsApp Business, Google Sheets and Docs", "Site padoca-au.com": "Website padoca-au.com", "Benchmarking": "Benchmarking", "Estado atual e futuro": "Current and future state", "Arquétipos de usuário": "User archetypes", "Indicadores": "Metrics", "Análise de relatos de produção, conversas reais e Shopify": "Analysis of production notes, real conversations and Shopify", "Auditoria do site": "Website audit", "Benchmarking de plataformas e padarias": "Benchmarking of platforms and bakeries", "Cinco arquétipos de quem procura a Padoca": "Five archetypes of people who reach out to Padoca", "Página inicial em nove etapas": "Homepage in nine stages", "Regra automatizar repetição, humanizar decisão": "Rule: automate repetition, humanize decisions", "Copy bilíngue": "Bilingual copy", "Blueprint da encomenda": "Order blueprint", "Roadmap em cinco fases e site no ar": "Five-phase roadmap and live website", "Procedimentos e modelo comercial": "Procedures and commercial model", "Cinco indicadores de atendimento": "Five customer service metrics", "Abertura do site da Padoca com a frase Flavours that make you feel at home": "Padoca website hero with the line Flavours that make you feel at home", "Abertura do site redesenhado, no ar em padoca-au.com: “Flavours that make you feel at home. Inspired by saudade. Baked in Brisbane.”": "Hero of the redesigned website, live at padoca-au.com: “Flavours that make you feel at home. Inspired by saudade. Baked in Brisbane.”", "Carolinas de doce de leite da Padoca": "Padoca’s dulce de leche carolinas", "Carolinas de Doce de Leite, com nome original e explicação na própria descrição.": "Dulce de Leche Carolinas, with the original name explained within the description.", "Pão de mel da Padoca": "Padoca’s pão de mel", "Pão de Mel, o doce que deu origem à marca.": "Pão de Mel, the treat that started the brand.", "Bolo de cenoura com brigadeiro da Padoca": "Padoca’s carrot cake with brigadeiro", "Bolo de Cenoura com Brigadeiro.": "Carrot Cake with Brigadeiro.", "Imagens do site da Padoca. A nova navegação já separa os caminhos de cada público: doces, bolos, presentes, catering e eventos, história e uma página própria para negócios (B2B).": "Images from Padoca’s website. The new navigation already separates each audience’s path: sweets, cakes, gifts, catering and events, the brand story and a dedicated page for businesses (B2B).", "Quem chega a este serviço": "Who comes to this service", "Brasileiros com saudade de um sabor específico. Australianos e outros moradores de Brisbane que nunca ouviram falar de brigadeiro. Quem quer pedir rápido, quem quer encomendar um bolo para uma festa, cafés interessados em revender.": "Brazilians missing a specific taste of home. Australians and other Brisbane locals who have never heard of brigadeiro. People who want to order quickly, people ordering a cake for a party, cafés interested in reselling.", "E o próprio Pedro, que também é usuário do serviço: cada minuto que ele passa respondendo “que horas vocês abrem?” é um minuto fora da cozinha.": "And Pedro himself, who is also a user of the service: every minute he spends answering “what time do you open?” is a minute away from the kitchen.", "Análise da operação a partir de relatos de produção, conversas reais do WhatsApp e dados do Shopify. Leitura do site atual tela por tela, análise do Instagram, comparação com outras padarias e com as plataformas que negócios de alimentação usam.": "Operational analysis based on production notes, real WhatsApp conversations and Shopify data. A screen-by-screen review of the current website, an Instagram analysis, and comparisons with other bakeries and with the platforms food businesses use.", "O site informava, mas não seduzia. E não conduzia o cliente com clareza até o pedido.": "The website informed, but it did not entice. And it did not guide customers clearly to the order.", "Diagnóstico do redesenho do site, junho de 2026": "Website redesign diagnosis, June 2026", "Mapa de estado atual e futuro do site": "Current and future state map of the website", "Do documento de redesenho estratégico, junho de 2026.": "From the strategic redesign document, June 2026.", "Estado atual e futuro, role para o lado": "Current and future state, scroll sideways", "Área": "Area", "Como estava": "How it was", "Como deveria funcionar": "How it should work", "Página inicial": "Homepage", "Promessa interessante, mas genérica, e pouca construção de desejo antes da vitrine": "An interesting but generic promise, and little desire-building before the product display", "Abertura emocional, produtos de entrada, história, prova social e caminhos claros para comprar": "Emotional hero, entry products, the brand story, social proof and clear paths to buy", "Produtos": "Products", "Formato de catálogo, com pouca curadoria e pouca explicação de ocasiões de consumo": "Catalog format, with little curation and little explanation of occasions", "Organizados por desejo e uso: mais vendidos, bolos, doces brasileiros, presentes, eventos e encomendas": "Organized by desire and use: best sellers, cakes, Brazilian sweets, gifts, events and custom orders", "História": "Story", "A história do Pedro e da avó aparecia pequena demais": "The story of Pedro and his grandmother was far too small", "A narrativa vira ativo de marca: Brasil, memória afetiva, artesanato e imigração": "The narrative becomes a brand asset: Brazil, emotional memory, craft and immigration", "Encomendas": "Custom orders", "Página simples, com pouca orientação sobre processo, prazos e opções": "A simple page, with little guidance on process, lead times and options", "Página com galeria, sabores, tamanhos, processo, prazos, dúvidas frequentes e formulário claro": "A page with gallery, flavors, sizes, process, lead times, FAQ and a clear form", "Conversão": "Conversion", "Poucas provas sociais, poucos caminhos intermediários e pouca redução de dúvidas": "Little social proof, few intermediate paths and little to reduce doubts", "Avaliações, perguntas frequentes, retirada e entrega explicadas, mais vendidos e chamadas por contexto": "Reviews, FAQ, pickup and delivery explained, best sellers and contextual calls to action", "Decisão 1: manter a plataforma e redesenhar a experiência": "Decision 1: keep the platform and redesign the experience", "A tentação era trocar de plataforma. A recomendação foi manter o Shopify. O gargalo era a experiência, não a tecnologia, e o Pedro já sabia operar o sistema. Migrar traria risco operacional sem garantia de vender mais. O plano foi testar três temas gratuitos antes de pagar por um tema premium.": "The temptation was to switch platforms. The recommendation was to keep Shopify. The bottleneck was the experience, not the technology, and Pedro already knew how to run the system. Migrating would bring operational risk with no guarantee of more sales. The plan was to test three free themes before paying for a premium one.", "Decisão 2: uma página inicial que responde uma pergunta a cada rolagem": "Decision 2: a homepage that answers one question per scroll", "A home virou uma sequência de nove etapas, cada uma com uma função. A regra de UX que escrevemos: a cada rolagem, o cliente recebe uma resposta.": "The homepage became a sequence of nine stages, each with a function. The UX rule we wrote: with each scroll, the customer gets an answer.", "Mapa da nova página inicial": "Map of the new homepage", "Do documento de redesenho. Na faixa vermelha, a pergunta do cliente que cada trecho responde.": "From the redesign document. The red band shows the customer question each section answers.", "Mapa da página inicial, role para o lado": "Homepage map, scroll sideways", "Abertura": "Hero", "Promessa clara, imagem forte, botão para comprar ou encomendar": "Clear promise, strong image, button to buy or order", "Mais vendidos": "Best sellers", "Os produtos mais desejados, para reduzir a indecisão": "The most wanted products, to reduce indecision", "Categorias": "Categories", "Bolos, doces brasileiros, pães, presentes, eventos": "Cakes, Brazilian sweets, breads, gifts, events", "Nossa história": "Our story", "Pedro, a avó, o Brasil, o artesanal": "Pedro, his grandmother, Brazil, the craft", "Bolos personalizados com processo simples": "Custom cakes with a simple process", "Eventos": "Events", "Abre a venda para empresas e ocasiões maiores": "Opens sales to businesses and larger occasions", "Prova social": "Social proof", "Avaliações, fotos de clientes e eventos": "Reviews, customer photos and events", "Dúvidas": "Questions", "Prazos, retirada, entrega, conservação, pagamento": "Lead times, pickup, delivery, storage, payment", "Fechamento": "Closing", "Escolher, encomendar ou falar com a Padoca": "Choose, order or talk to Padoca", "O que é isso?": "What is this?", "Por que eu quero?": "Why do I want it?", "Como eu escolho?": "How do I choose?", "Por que eu confio?": "Why do I trust it?", "Como eu compro?": "How do I buy?", "Do mapa ao site no ar": "From the map to the live website", "O que a nova página inicial e o menu do padoca-au.com já entregam de cada etapa planejada, conferido no site em outubro de 2026.": "What the new homepage and the padoca-au.com menu already deliver from each planned stage, checked on the website in October 2026.", "Do mapa ao site no ar, role para o lado": "From the map to the live website, scroll sideways", "Etapa planejada": "Planned stage", "Como aparece no site": "How it appears on the website", "Situação": "Status", "“Flavours that make you feel at home. Inspired by saudade. Baked in Brisbane.” com botão Shop Now": "“Flavours that make you feel at home. Inspired by saudade. Baked in Brisbane.” with a Shop Now button", "No ar": "Live", "Vitrine de produtos em destaque logo abaixo da abertura": "Featured products right below the hero", "Menu com Sweet Treats, Cakes e Gifts": "Menu with Sweet Treats, Cakes and Gifts", "Bloco Our Story na página inicial e página Our history": "Our Story block on the homepage and an Our history page", "Bolos de festa com escolha de tamanho, massa e recheio": "Celebration cakes with a choice of size, sponge and filling", "Eventos e negócios": "Events and businesses", "Páginas Catering": "Catering", "Events e B2B, separadas no menu": "Events and B2B pages, separate in the menu", "Prova social e dúvidas": "Social proof and questions", "Avaliações e perguntas frequentes ainda não aparecem na página inicial": "Reviews and FAQ do not yet appear on the homepage", "Próxima etapa": "Next stage", "Decisão 3: escrever para dois públicos sem que um precise da explicação do outro": "Decision 3: write for two audiences without either needing the other’s explanation", "Os nomes dos produtos ficam em português, com o equivalente em inglês ao lado. A descrição explica o suficiente para quem está descobrindo e reconhece a memória de quem já conhece. No atendimento, a regra de voz foi soar brasileira sem precisar explicar o Brasil o tempo inteiro.": "Product names stay in Portuguese, with the English equivalent alongside. The description explains enough for newcomers and recognizes the memories of those who already know the product. In customer service, the voice rule was to sound Brazilian without having to explain Brazil all the time.", "Carolinas de Doce de Leite. O nome original vem primeiro e é explicado dentro da frase, sem glossário.": "Dulce de Leche Carolinas. The original name comes first and is explained within the sentence, with no glossary.", "Esfirra de Calabresa. A mesma frase serve aos dois públicos. Copy final de produtos, setembro de 2026.": "Calabresa Esfirra. The same sentence serves both audiences. Final product copy, September 2026.", "Decisão 4: automatizar a repetição e deixar a decisão com uma pessoa": "Decision 4: automate repetition and leave decisions to a person", "Lendo as conversas reais, quase toda mensagem cabia em cinco tipos de pessoa. O sistema de atendimento foi desenhado a partir delas, no WhatsApp Business gratuito que a Padoca já usava, com um menu de no máximo seis opções.": "Reading real conversations, almost every message fit into five types of people. The service system was designed around them, on the free WhatsApp Business app Padoca already used, with a menu of at most six options.", "Quem escreve para a Padoca e quem responde": "Who writes to Padoca and who answers", "Do sistema de WhatsApp, versão 1, agosto de 2026.": "From the WhatsApp system, version 1, August 2026.", "Tipos de pessoa no atendimento": "Customer types in the service system", "Quem escreve": "Who writes", "O que quer": "What they want", "Quem responde": "Who answers", "Quero comprar": "I want to buy", "Já conhece a Padoca e quer pedir rápido": "Already knows Padoca and wants to order quickly", "Automático": "Automated", "Quero conhecer": "I want to know more", "Onde fica, o que vende": "Where it is, what it sells", "Quero encomendar": "I want to place an order", "Bolo ou doce para uma ocasião": "A cake or sweets for an occasion", "coleta os dados,": "collects the details,", "Atendimento humano": "Human support", "define preço e prazo": "sets price and lead time", "Quero catering": "I want catering", "Evento, empresa, grupo grande": "Event, company, large group", "Tive um problema": "I had a problem", "Atraso, pedido errado, reclamação": "Delay, wrong order, complaint", "Fica automático": "Stays automated", "Horário, endereço, cardápio, link do site": "Hours, address, menu, website link", "Como pedir e como funciona a retirada": "How to order and how pickup works", "Formas de pagamento e perguntas frequentes": "Payment methods and FAQ", "O início de uma encomenda ou de um catering": "The start of a custom order or catering request", "Fica com uma pessoa": "Stays with a person", "Orçamento e qualquer coisa fora do normal": "Quotes and anything out of the ordinary", "Disponibilidade do dia, que depende da cozinha": "Daily availability, which depends on the kitchen", "Alteração, cancelamento e reembolso": "Changes, cancellations and refunds", "Reclamação: a mensagem automática acolhe, uma pessoa resolve": "Complaints: the automated message acknowledges, a person resolves", "Regra de ouro do documento: se tem dinheiro envolvido, se é diferente do normal, se depende da cozinha ou se é uma promessa, quem responde é sempre uma pessoa.": "Golden rule from the document: if money is involved, if it is out of the ordinary, if it depends on the kitchen or if it is a promise, a person always answers.", "Mapa de stakeholders da Padoca": "Padoca stakeholder map", "Reconstruído para o portfólio a partir do diagnóstico e da operação.": "Reconstructed for this portfolio from the diagnosis and the operation.", "Plataformas e parceiros": "Platforms and partners", "Shopify (site e pedidos online)": "Shopify (website and online orders)", "Square (venda na loja)": "Square (in-store sales)", "WhatsApp Business e Instagram": "WhatsApp Business and Instagram", "Consultoria Kura": "Kura", "Co e SÈVE Studio": "Co consultancy and SÈVE Studio", "Parceiros de eventos, como a turnê de João Gomes na Austrália": "Event partners, such as João Gomes’s tour in Australia", "Quem opera o serviço": "Who runs the service", "O dono, que produz, atende e decide": "The owner, who bakes, serves and decides", "Futura assistente de cozinha, para quem os procedimentos foram escritos": "A future kitchen assistant, for whom the procedures were written", "Quem compra": "Who buys", "Brasileiros que procuram um sabor de casa": "Brazilians looking for a taste of home", "Moradores locais descobrindo a confeitaria brasileira": "Locals discovering Brazilian baking", "Clientes de encomendas para festas e eventos": "Custom order clients for parties and events", "Cafés e negócios que compram no atacado ou revendem": "Cafés and businesses buying wholesale or for resale", "Service blueprint de uma encomenda de bolo": "Service blueprint of a custom cake order", "Reconstruído para o portfólio a partir do sistema de WhatsApp, da rotina de produção e das regras de retirada. Role a tabela para o lado.": "Reconstructed for this portfolio from the WhatsApp system, the production routine and the pickup rules. Scroll the table sideways.", "Blueprint da encomenda, role para o lado": "Order blueprint, scroll sideways", "Descobre": "Discovers", "Pede": "Asks", "Recebe orçamento": "Gets a quote", "Confirma": "Confirms", "Produção": "Production", "Retira": "Picks up", "Depois": "After", "Site, Instagram, avaliações": "Website, Instagram, reviews", "Menu de até seis opções no WhatsApp": "WhatsApp menu with up to six options", "Mensagem com valor e prazo": "Message with price and lead time", "Confirmação do pedido": "Order confirmation", "Nenhuma: acontece fora da vista": "None: it happens out of sight", "Endereço e horário de retirada": "Pickup address and time", "Avaliação e fotos de clientes": "Reviews and customer photos", "Procura um bolo para uma ocasião": "Looks for a cake for an occasion", "Escolhe “Encomendas” e responde às perguntas": "Chooses “Custom orders” and answers the questions", "Avalia a proposta": "Reviews the proposal", "Fecha o pedido": "Closes the order", "Busca no horário combinado, ou manda alguém": "Picks up at the agreed time, or sends someone", "Comenta, indica, volta": "Comments, recommends, comes back", "Copy bilíngue e página de encomendas": "Bilingual copy and custom orders page", "Mensagem automática coleta data, pessoas, produtos, ocasião, restrições e prazo": "Automated message collects date, number of people, products, occasion, restrictions and deadline", "Atendimento humano define preço e prazo": "Human support sets price and lead time", "Resposta rápida padronizada": "Standard quick reply", "Entrega do pedido na loja": "Order handed over in store", "Agradecimento": "Thank-you message", "Etiqueta de conversa “Encomenda”": "“Custom order” conversation label", "Checagem da agenda da cozinha": "Kitchen schedule check", "Pedido entra na rotina semanal": "Order enters the weekly routine", "Produção conforme os procedimentos": "Production following the procedures", "Separação e embalagem": "Picking and packing", "Perguntas repetidas viram novas respostas prontas": "Repeated questions become new quick replies", "Rotina de produção, procedimentos da cozinha, prazo mínimo de encomenda": "Production routine, kitchen procedures, minimum lead time for orders", "Decisão 5: arrumar o bastidor para a frente funcionar": "Decision 5: fix the backstage so the frontstage works", "Nada disso se sustenta se a cozinha não tem rotina. Em paralelo ao site e ao WhatsApp, desenhamos uma rotina semanal de produção com semanas com e sem entrega de atacado, procedimentos operacionais para a futura assistente de cozinha, e cinco jeitos de vender com uma única regra de preço cada. O desconto só aparece quando o cliente oferece algo em troca: pedidos recorrentes, ou recorrência mais divulgação da marca. Os contratos de atacado e revenda saíram em português e inglês.": "None of this holds up if the kitchen has no routine. Alongside the website and WhatsApp, we designed a weekly production routine with weeks with and without wholesale deliveries, operating procedures for a future kitchen assistant, and five ways to sell, each with a single pricing rule. A discount only appears when the customer offers something in return: recurring orders, or recurring orders plus brand promotion. The wholesale and resale contracts were written in Portuguese and English.", "Fora do digital, a Padoca também levou a marca para o camarim da turnê de João Gomes na Austrália, uma ação patrocinada, sem venda ao público.": "Offline, Padoca also brought the brand to the backstage of João Gomes’s tour in Australia, a sponsored activation with no public sales.", "etapas na nova página inicial, cada uma com uma função": "stages in the new homepage, each with a function", "tipos de pessoa no atendimento, base do menu do WhatsApp": "customer types in the service system, the base of the WhatsApp menu", "jeitos de vender, cada um com uma regra de preço": "ways to sell, each with one pricing rule", "números para acompanhar o WhatsApp no início": "metrics to track WhatsApp at the start", "Como saber se está funcionando": "How to know it is working", "Definimos cinco números antes de ligar qualquer automação: quantas conversas chegam, quantas se resolvem sem o Pedro, quantas viram pedido, quantas são encomenda ou catering, e quais perguntas se repetem e ainda não estão nas respostas prontas. A última é a mais importante, porque cada pergunta repetida é a pista da próxima versão.": "We defined five numbers before turning on any automation: how many conversations come in, how many are resolved without Pedro, how many become orders, how many are custom orders or catering, and which questions repeat and are not yet in the quick replies. The last one matters most, because every repeated question is a clue for the next version.", "Prosas: públicos diferentes, uma marca": "Prosas: different audiences, one brand", "A Prosas é uma empresa de tecnologia com soluções para editais, processos seletivos e investimento social. Quem usa está dos dois lados: empresas e governos que financiam, organizações e proponentes que buscam recurso. Cada um chega com um problema diferente, e a marca precisa fazer sentido para todos.": "Prosas is a technology company with solutions for open calls, selection processes and social investment. Its users are on both sides: companies and governments that fund, and organizations and applicants seeking funding. Each arrives with a different problem, and the brand has to make sense to all of them.", "Coordenadora de Marketing, com um time direto de duas pessoas": "Marketing Coordinator, with a direct team of two", "Jornadas de relacionamento": "Relationship journeys", "Posicionamento digital": "Digital positioning", "Mapa de capacidade do time": "Team capacity map", "Cuido de como a Prosas se apresenta nos canais digitais. Os materiais comerciais passaram a começar pelo problema de cada público (cultura, assistência social, empresas, governo), com o catálogo de soluções logo depois.": "I am responsible for how Prosas presents itself in digital channels. Sales materials now start from each audience’s problem (culture, social assistance, companies, government), with the catalog of solutions right after.", "Relacionamento com clientes": "Client relationships", "Jornadas de relacionamento por e-mail segmentadas por público e atendimento aos clientes no que envolve comunicação e marketing.": "Email relationship journeys segmented by audience, and client support on everything related to communication and marketing.", "Divulgação de projetos de clientes": "Promotion of client projects", "Coordeno a divulgação de projetos e campanhas de clientes como Banco BV e Globo, e a comunicação do Programa de Formação em Gestão de Políticas Públicas para a Cultura, com patrocínio do Itaú e parceria do IBDCult.": "I coordinate the promotion of projects and campaigns for clients such as Banco BV and Globo, and the communication of the Cultural Public Policy Management Training Program, sponsored by Itaú in partnership with IBDCult.", "Bastidor": "Backstage", "Para o público interno, lancei a intranet e uma newsletter mensal. Também mapeei a capacidade do time para a diretoria, mostrando onde as entregas dependiam de uma única pessoa.": "For the internal audience, I launched the intranet and a monthly newsletter. I also mapped the team’s capacity for leadership, showing where deliveries depended on a single person.", "Vamos conversar": "Let’s talk", "Moro em São Paulo e trabalho remoto.": "I live in São Paulo and work remotely.", "Valéria Reis, 2026. Os artefatos marcados como reconstruídos foram montados para este portfólio a partir dos documentos originais de cada projeto.": "Valéria Reis, 2026. Artifacts marked as reconstructed were put together for this portfolio from each project’s original documents.", "Notion, Google Workspace, WhatsApp Business, Instagram e LinkedIn": "Notion, Google Workspace, WhatsApp Business, Instagram and LinkedIn"};
+  var TITLE={pt:document.title,en:"Valéria Reis — Service Design"};
+  var BR=["America/Sao_Paulo","America/Araguaina","America/Bahia","America/Belem","America/Boa_Vista","America/Campo_Grande","America/Cuiaba","America/Eirunepe","America/Fortaleza","America/Maceio","America/Manaus","America/Noronha","America/Porto_Velho","America/Recife","America/Rio_Branco","America/Santarem"];
+  function detect(){
+    try{var saved=localStorage.getItem("vr-lang");if(saved==="pt"||saved==="en")return saved;}catch(e){}
+    var tz="";try{tz=Intl.DateTimeFormat().resolvedOptions().timeZone||"";}catch(e){}
+    if(BR.indexOf(tz)<0)return "en";
+    var l=(navigator.languages&&navigator.languages[0])||navigator.language||"pt";
+    return l.toLowerCase().indexOf("pt")===0?"pt":"en";
+  }
+  var nodes=[],attrs=[];
+  function collect(){
+    var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){
+      var p=n.parentNode;while(p){if(p.nodeName==="SCRIPT"||p.nodeName==="STYLE")return NodeFilter.FILTER_REJECT;p=p.parentNode;}
+      return n.nodeValue.trim()?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}});
+    var n;while((n=w.nextNode())){var t=n.nodeValue.trim();if(D[t]!==undefined)nodes.push({n:n,pt:n.nodeValue,key:t});}
+    document.querySelectorAll("[alt],[aria-label],[title]").forEach(function(el){
+      ["alt","aria-label","title"].forEach(function(a){var v=el.getAttribute(a);if(v&&D[v.trim()]!==undefined)attrs.push({el:el,a:a,pt:v,key:v.trim()});});});
+  }
+  function apply(lang){
+    nodes.forEach(function(o){if(lang==="en"){var lead=o.pt.match(/^\s*/)[0],trail=o.pt.match(/\s*$/)[0];o.n.nodeValue=lead+D[o.key]+trail;}else{o.n.nodeValue=o.pt;}});
+    attrs.forEach(function(o){o.el.setAttribute(o.a,lang==="en"?D[o.key]:o.pt);});
+    document.documentElement.lang=lang==="en"?"en":"pt-BR";
+    document.title=TITLE[lang];
+    var b=document.getElementById("langtoggle");
+    if(b){b.textContent=lang==="en"?"Português":"English";b.setAttribute("lang",lang==="en"?"pt-BR":"en");}
+    current=lang;
+  }
+  var current="pt";
+  collect();
+  apply(detect());
+  document.getElementById("langtoggle").addEventListener("click",function(){
+    var next=current==="en"?"pt":"en";apply(next);try{localStorage.setItem("vr-lang",next);}catch(e){}
+  });
+})();
+</script>
+</body>
+</html>
